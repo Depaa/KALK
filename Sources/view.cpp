@@ -286,7 +286,35 @@ void view::clickCreaOrario() {
             mostraOra=s;
             time->setText(mostraOra);
             time->show();
+
+            Orario->setDisabled(true);
+            Data->setEnabled(true);
+            Sole->setEnabled(true);
+            Fuso->setEnabled(true);
+
+            sommaButton->setEnabled(true);
+            sottrazioneButton->setEnabled(true);
+            velocitaButton->setEnabled(true);
+            orarioFormButton->setEnabled(true);
+            dividiButton->setEnabled(true);
+
+            settimanaButton->setDisabled(true);
+            giornoAnnoButton->setDisabled(true);
+            giornoSettButton->setDisabled(true);
+            stagioneButton->setDisabled(true);
+            dataFormButton->setDisabled(true);
+            durataButton->setDisabled(true);
+            fusoButton->setDisabled(true);
+            latButton->setDisabled(true);
+            lonButton->setDisabled(true);
+            emisButton->setDisabled(true);
+            differenzaButton->setDisabled(true);
+            orarioAltraCittaButton->setDisabled(true);
+            sunriseButton->setDisabled(true);
+            sunsetButton->setDisabled(true);
+            noonButton->setDisabled(true);
         }
+
         else
         {
             QMessageBox m;
@@ -338,6 +366,33 @@ void view::clickCreaData() {
             time->show();
             date->setText(mostraData);
             date->show();
+
+            Orario->setEnabled(true);
+            Data->setDisabled(true);
+            Sole->setEnabled(true);
+            Fuso->setEnabled(true);
+
+            sommaButton->setEnabled(true);
+            sottrazioneButton->setEnabled(true);
+            settimanaButton->setEnabled(true);
+            giornoAnnoButton->setEnabled(true);
+            giornoSettButton->setEnabled(true);
+            stagioneButton->setEnabled(true);
+            dataFormButton->setEnabled(true);
+            durataButton->setEnabled(true);
+
+            velocitaButton->setDisabled(true);
+            orarioFormButton->setDisabled(true);
+            dividiButton->setDisabled(true);
+            fusoButton->setDisabled(true);
+            latButton->setDisabled(true);
+            lonButton->setDisabled(true);
+            emisButton->setDisabled(true);
+            differenzaButton->setDisabled(true);
+            orarioAltraCittaButton->setDisabled(true);
+            sunriseButton->setDisabled(true);
+            sunsetButton->setDisabled(true);
+            noonButton->setDisabled(true);
         }
         else
         {
@@ -346,7 +401,6 @@ void view::clickCreaData() {
             m.exec();
         }
     }
-
 }
 
 
@@ -456,31 +510,69 @@ void view::clickCreaSole(){
 
 }
 
-/*
-void view::clickMostraOrario() {
-    time->setText(mostraOra);
-    time->show();
-    date->hide();
-    fuso->hide();
-    sole->hide();
-}
-
-void view::clickMostraData() {
-
-}
-
-void view::clickMostraFuso(){
-
-}
-
-void view::clickMostraSole(){
-
-}
-*/
-
 //METODI VIRTUALI
 void view::clickSomma(){
+    QDialog* dialog=new QDialog(this);
+    QFormLayout form(dialog);
+
+    form.addRow(new QLabel("Somma Orario"));
+    QLineEdit* line1= new QLineEdit(dialog);
+    QString textline1=QString("Ore: ");
+    QLineEdit* line2= new QLineEdit(dialog);
+    QString textline2=QString("Minuti: ");
+    QLineEdit* line3= new QLineEdit(dialog);
+    QString textline3=QString("Secondi: ");
     
+    form.addRow(textline1, line1);
+    form.addRow(textline2, line2);
+    form.addRow(textline3, line3);    
+
+    QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
+    form.addRow(B);
+    QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
+    QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    if(dialog->exec()==QDialog::Accepted) {
+        bool sent=true;
+        QString s;
+        s= s+line1->text() + ":" + line2->text() + ":" + line3->text();        
+        if(Orario->isDisabled) { //sono su orario
+            sent= controller->onClickSomma(s);
+            if (sent)
+            {
+                //time->hide();
+                QTime t=controller->getTime();
+                mostraOra=t.toString("hh:mm:ss");
+                time->setText(mostraOra);
+                time->show();
+            }
+            else
+            {
+                QMessageBox m;
+                m.setText("Hai sbagliato coglione");
+                m.exec();
+            }
+        }
+        else { //sono su data
+            sent= controller->onClickSomma(s);
+            if(sent) {
+                   QDate d=controller->getDate();
+                   QTime t=controller->getTime();
+                   mostraData=d.toString("dd:MM:yyyy");
+                   mostraOra=t.toString("hh:mm:ss");
+                   time->setText(mostraOra);
+                   date->setText(mostraData);
+                   time->show();
+                   date->show();
+            }
+            
+            else {
+                QMessageBox m;
+                m.setText("Hai sbagliato coglione");
+                m.exec();
+            }
+        }
+    }
 }
 
 void view::clickSottrazione(){
