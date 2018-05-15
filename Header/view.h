@@ -1,39 +1,39 @@
 #ifndef VIEW_H
 #define VIEW_H
-
 #include <QWidget>
 #include <QString>
+#include "control.h"
 
-#include <QPushButton> //pulsante
-#include <QToolButton> //pulsante con immagine
-#include <QGridLayout>
-//#include 'Controller.h'
-#include <QTimer>
-#include <QLabel>  //mostra testo o immagine
+class QPushButton;
+//class QToolButton;
+class QGridLayout;
 
+class QTimer;
+class QLabel;
+class QDialog;
 
 class view : public QWidget
 {
     Q_OBJECT
 
     public:
-        explicit view(QWidget* parent = 0);
+        view(QWidget* parent=0);
 
         virtual ~view();
 
-        //void setController(controller*);
+        void setControl(control*);
 
     public slots:
         void clickCreaOrario();
         void clickCreaData();
         void clickCreaFuso();
         void clickCreaSole();
-
+        /*
         void clickMostraOrario();
         void clickMostraData();
         void clickMostraFuso();
         void clickMostraSole();
-
+    */
         //METODI VIRTUALI
         void clickSomma();
         void clickSottrazione();
@@ -66,25 +66,29 @@ class view : public QWidget
         void clickNoon();
 
     private:
-        //controller* contr;
+        control* controller;
+        QString mostraOra;
+        QString mostraFuso;
+        QString mostraData;
+        QString mostraSole;
+
+        QString nomeApp;
         QGridLayout* contGrid;
+
+        QPushButton* Orario;
+        QPushButton* Data;
+        QPushButton* Fuso;
+        QPushButton* Sole;
 
         QLabel* time;
         QLabel* date;
         QLabel* fuso;
         QLabel* sole;
 
-        /*
         QTimer* timerOra;
         QTimer* timerData;
         QTimer* timerFuso;
         QTimer* timerSole;
-        */
-
-        QPushButton* Orario;
-        QPushButton* Data;
-        QPushButton* Fuso;
-        QPushButton* Sole;
 
         //METODI VIRTUALI
         QPushButton* sommaButton;
