@@ -302,11 +302,11 @@ void view::clickCreaData() {
 
     form.addRow(new QLabel("Inserisci Data"));
     QLineEdit* line1= new QLineEdit(dialog);
-    QString textline1=QString("Giorno: ");
+    QString textline1=QString("Giorno*: ");
     QLineEdit* line2= new QLineEdit(dialog);
-    QString textline2=QString("Mese: ");
+    QString textline2=QString("Mese*: ");
     QLineEdit* line3= new QLineEdit(dialog);
-    QString textline3=QString("Anno: ");
+    QString textline3=QString("Anno*: ");
     QLineEdit* line4= new QLineEdit(dialog);
     QString textline4=QString("Ore: ");
     QLineEdit* line5= new QLineEdit(dialog);
@@ -325,7 +325,28 @@ void view::clickCreaData() {
     QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
     QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
 
-    dialog->exec();
+    if(dialog->exec()==QDialog::Accepted) {
+        bool sent=true;
+        QString s;
+        s= s+line1->text() + "/" + line2->text() + "/" + line3->text() + "," + line4->text() + ":" + line5->text() + ":" + line6->text();
+        sent= controller->onClickCreaData(s);
+        if (sent)
+        {
+            mostraOra=line4->text() + ":" + line5->text() + ":" + line6->text();
+            mostraData= line1->text() + "/" + line2->text() + "/" + line3->text();
+            time->setText(mostraOra);
+            time->show();
+            date->setText(mostraData);
+            date->show();
+        }
+        else
+        {
+            QMessageBox m;
+            m.setText("Hai sbagliato coglione");
+            m.exec();
+        }
+    }
+
 }
 
 
@@ -343,16 +364,23 @@ void view::clickCreaFuso(){
     QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
     QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
 
-    QString s;
-    bool sent=true;
-
-
-    if(sent && dialog->exec()==QDialog::Accepted) {
+    if(dialog->exec()==QDialog::Accepted) {
+        bool sent=true;
+        QString s;
         s= s+line1->text();
-        mostraFuso=s;
-        fuso->show();
-        fuso->setText(mostraFuso);
-
+        sent= controller->onClickCreaFuso(s);
+        if (sent)
+        {
+            mostraFuso=s;
+            fuso->setText(mostraFuso);
+            fuso->show();
+        }
+        else
+        {
+            QMessageBox m;
+            m.setText("Hai sbagliato coglione");
+            m.exec();
+        }
     }
 }
 
@@ -374,13 +402,13 @@ void view::clickCreaSole(){
     QLineEdit* line6= new QLineEdit(dialog);
     QString textline6=QString("Anno: ");
     QLineEdit* line7= new QLineEdit(dialog);
-    QString textline7=QString("Ora (attuali): ");
+    QString textline7=QString("Ora(attuali): ");
     QLineEdit* line8= new QLineEdit(dialog);
-    QString textline8=QString("Minuti (attuali): ");
+    QString textline8=QString("Minuti(attuali): ");
     QLineEdit* line9= new QLineEdit(dialog);
-    QString textline9=QString("Secondi (attuali): ");
+    QString textline9=QString("Secondi(attuali): ");
     QLineEdit* line10= new QLineEdit(dialog);
-    QString textline10=QString("Ora Legale (1 o 0): ");
+    QString textline10=QString("Ora Legale(1 o 0): ");
     QLineEdit* line11= new QLineEdit(dialog);
     QString textline11=QString("Equazione del Tempo: ");
     QLineEdit* line12= new QLineEdit(dialog);
@@ -403,9 +431,28 @@ void view::clickCreaSole(){
     QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
     QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
 
-    QString s;
-    bool sent=true;
+    if(dialog->exec()==QDialog::Accepted) {
+        bool sent=true;
+        QString s;
+        s= s+line1->text() + "," + line2->text() + "," + line3->text() + "," + line4->text() + "/" + line5->text() + "/" + line6->text() + "," + line7->text() + ":" + line8->text() + ":" + line9->text() + "," + line10->text() + "," + line11->text() + "," + line12->text();
+        sent= controller->onClickCreaSole(s);
+        if (sent)
+        {
+            mostraData=line4->text() + "/" + line5->text() + "/" + line6->text();
+            mostraOra= line7->text() + ":" + line8->text() + ":" + line9->text();
 
+            time->setText(mostraOra);
+            date->setText(mostraData);
+            time->show();
+            date->show();
+        }
+        else
+        {
+            QMessageBox m;
+            m.setText("Hai sbagliato coglione");
+            m.exec();
+        }
+    }
 
 }
 
@@ -433,7 +480,7 @@ void view::clickMostraSole(){
 
 //METODI VIRTUALI
 void view::clickSomma(){
-
+    
 }
 
 void view::clickSottrazione(){
