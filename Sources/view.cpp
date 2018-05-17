@@ -680,7 +680,7 @@ void view::clickSottrazione(){
     if(dialog->exec()==QDialog::Accepted) {
         bool sent=true;
         QString s;
-        if(!(Orario->isEnabled())) { //sono su orario
+        if(!(Orario->isEnabled()) && Data->isEnabled()) { //sono su orario
             s= s+line1->text() + ":" + line2->text() + ":" + line3->text();
             sent= controller->onClickSottrazione(s);
             if (sent)
@@ -785,8 +785,13 @@ void view::clickVelocita(){
     }
 }
 
-void view::clickOrarioForm(){
-
+void view::clickOrarioForm() {
+    QTime t=controller->onClickOrarioForm();
+    QMessageBox MB;
+    MB.setWindowTitle("Formato 12h");
+    MB.setText("Il formato 12h e': " + t.toString("hh:mm:ss"));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickDividi(){
@@ -826,7 +831,12 @@ void view::clickStagione(){
 }
 
 void view::clickDataForm(){
-
+    QString s=controller->onClickDataForm();
+    QMessageBox MB;
+    MB.setWindowTitle("Formato Data");
+    MB.setText(s);
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickDurata(){
