@@ -371,7 +371,7 @@ void view::clickCreaData() {
             date->setText(mostraData);
             date->show();
 
-            Orario->setEnabled(true);
+            Orario->setDisabled(true);
             Data->setDisabled(true);
             Sole->setEnabled(true);
             Fuso->setEnabled(true);
@@ -384,10 +384,10 @@ void view::clickCreaData() {
             stagioneButton->setEnabled(true);
             dataFormButton->setEnabled(true);
             durataButton->setEnabled(true);
+            velocitaButton->setEnabled(true);
+            orarioFormButton->setEnabled(true);
+            dividiButton->setEnabled(true);
 
-            velocitaButton->setDisabled(true);
-            orarioFormButton->setDisabled(true);
-            dividiButton->setDisabled(true);
             fusoButton->setDisabled(true);
             latButton->setDisabled(true);
             lonButton->setDisabled(true);
@@ -465,7 +465,7 @@ void view::clickCreaFuso(){
     if(dialog->exec()==QDialog::Accepted) {
         bool sent=true;
         QString s;
-        s= CB->currentText()+line1->text() + "/" + line2->text() + "/" + line3->text() + "," + line4->text() + ":" + line5->text() + ":" + line6->text();
+        s= CB->currentText()+ line1->text() + "/" + line2->text() + "/" + line3->text() + "," + line4->text() + ":" + line5->text() + ":" + line6->text();
         sent= controller->onClickCreaFuso(s);
         if (sent)
         {
@@ -482,10 +482,10 @@ void view::clickCreaFuso(){
             time->show();
             date->show();
 
-            Orario->setEnabled(true);
-            Data->setEnabled(true);
-            Sole->setEnabled(true);
+            Orario->setDisabled(true);
+            Data->setDisabled(true);
             Fuso->setDisabled(true);
+            Sole->setEnabled(true);
 
             fusoButton->setEnabled(true);
             latButton->setEnabled(true);
@@ -614,7 +614,7 @@ void view::clickSomma(){
     if(dialog->exec()==QDialog::Accepted) {
         bool sent=true;
         QString s;
-        if(!(Orario->isEnabled())) { //sono su orario
+        if(!(Orario->isEnabled()) && Data->isEnabled()) { //sono su orario
             s= s+line1->text() + ":" + line2->text() + ":" + line3->text();
             sent= controller->onClickSomma(s);
             if (sent)
@@ -793,7 +793,7 @@ void view::clickDividi(){
     QDialog* dialog=new QDialog(this);
     QFormLayout form(dialog);
 
-    form.addRow(new QLabel("Inserisci in quanto\n vuoi dividere l'orario"));
+    form.addRow(new QLabel("Inserisci in quante parti\nVuoi dividere l'orario"));
     QLineEdit* line1= new QLineEdit(dialog);
     form.addRow(line1);
 
