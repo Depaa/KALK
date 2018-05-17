@@ -7,6 +7,7 @@ class fusoorario : public data
     private:
         string citta;
     public:
+        fusoorario();
         fusoorario(string);
         fusoorario(string, data);
 
