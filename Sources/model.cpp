@@ -1,4 +1,5 @@
 #include "model.h"
+#include<typeinfo>
 
 model::model() : m() {}
 
@@ -23,6 +24,13 @@ void model::buildData(int g, int me, int a, int o, int mi, int s) {
 
 void model::buildFusoorario(string c) {
     orario* aux=new fusoorario(c);
+    if(m)
+        delete m;
+    m=aux;
+}
+
+void model::buildFusoorario(string c, data d) {
+    orario* aux=new fusoorario(c, d);
     if(m)
         delete m;
     m=aux;
@@ -111,25 +119,39 @@ double model::declinazioneSolare() const {
 
 //metodi virtuali con polimorfismo
 //GIORNO-MESE-ANNO-ORE-MINUTI-SECONDI
-void model::somma(int o, int mi, int s) {
+void model::Sum(int o, int mi, int s) {
     if(s>59 || s<0 || mi>59 || mi<0 || o>23 || o<0) {
         m->aggiungiSecondi(s);
         m->aggiungiMinuti(mi);
         m->aggiungiOre(o);
     }
-    else
-        m->somma(orario(o, mi, s));
+    else {
+        try {
+            orario* aux=dynamic_cast<data*>(m);
+        }
+        catch(std::bad_cast e) {
+            m=m->somma(orario(o, mi, s));
+        }
+        m=m->somma(orario(o, mi, s));
+    }
     //forse devo fare un controllo quando è data con dynamic cast
 }
 
-void model::sottrazione(int o, int mi, int s) {
+void model::Sub(int o, int mi, int s) {
     if(s>59 || s<0 || mi>59 || mi<0 || o>23 || o<0) {
         m->sottraiSecondi(s);
         m->sottraiMinuti(mi);
         m->sottraiOre(o);
     }
-    else
-        m->somma(orario(o, mi, s));
+    else {
+        try {
+            orario* aux=dynamic_cast<data*>(m);
+        }
+        catch(std::bad_cast e) {
+            m=m->sottrazione(orario(o, mi, s));
+        }
+        m=m->sottrazione(orario(o, mi, s));
+    }
     //forse devo fare un controllo quando è data con dynamic cast
 }
 
@@ -148,10 +170,8 @@ double model::distanzaVelocita(double km) const {
 
 /*NB: CHIEDERE AL PROF SE VA BENE O E' MEGLIO FARE UN RITORNO IN INT*/
 //tolto orario per void
-void model::orarioFormato() {
-    orario aux=m->formato12h();
-    int auxsec=aux.getSec();
-    m->cambiaSec(auxsec);
+orario model::orarioFormato() const {
+    return m->formato12h();
 }
 
  //controllare se da formato12h a formato24h
@@ -192,6 +212,10 @@ int model::durataDate(int g, int me, int a) const {
     return auxM->durata(data(g, me, a, 0, 0, 0));
 }
 
+void model::aggGiorni(int g) {
+    data* aux=dynamic_cast<data*>(m);
+    aux->aggiungiGiorno(g);
+}
 
 //funzioni di fusoorario
 int model::getFuso() const {
