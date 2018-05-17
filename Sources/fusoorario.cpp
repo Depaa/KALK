@@ -1,7 +1,11 @@
 #include "fusoorario.h"
 
+fusoorario::fusoorario() : data(), citta("Londra") {}
+
 fusoorario::fusoorario(string c) : data(), citta(c) {}
+
 fusoorario::fusoorario(string c, data d) : data(d), citta(c) {}
+
 
 fusoorario::fusoorario(const fusoorario& fo) : data(fo), citta(fo.getCitta()) {}
 
