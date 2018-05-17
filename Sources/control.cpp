@@ -40,9 +40,26 @@ bool control::onClickCreaData(QString d) const {
     return true;
 }
 
-bool control::onClickCreaFuso(string f) const {
+bool control::onClickCreaFuso(QString f) const {
     try {
-        mod->buildFusoorario(f);
+        QRegExp separator("(,|:|/)");
+        QStringList aux=f.split(separator);
+        string c=aux.operator [](0).toStdString();
+        //if()
+        //se la lunghezza dopo è maggiore allora c'è altro
+        if(!(aux.operator [](1).isEmpty())) {
+            int g=aux.operator [](1).toInt();
+            int me=aux.operator [](2).toInt();
+            int a=aux.operator [](3).toInt();
+            int o=aux.operator [](4).toInt();
+            int mi=aux.operator [](5).toInt();
+            int s=aux.operator [](6).toInt();
+
+            data aux(g, me, a, o, mi, s);
+            mod->buildFusoorario(c, aux);
+        }
+        else
+            mod->buildFusoorario(c);
     }
     catch (overflow_error) {
         return false;
@@ -91,7 +108,7 @@ bool control::onClickSomma(QString sum) const {
 
     //mancano controlli se h,m,s sono != int
 
-    mod->somma(h, m, s);
+    mod->Sum(h, m, s);
     return true;
 }
 
@@ -101,11 +118,11 @@ bool control::onClickSottrazione(QString sum) const {
     int h=aux.operator [](0).toInt();
     int m=aux.operator [](1).toInt();
     int s=aux.operator [](2).toInt();
-    mod->somma(h, m, s);
+    mod->Sub(h, m, s);
     return true;
 }
 
-void control::onClickClear() const {
+void control::onClickClear() {
     mod->clearMemory();
 }
 
@@ -114,12 +131,18 @@ double control::onClickVelocita(double km) const {
     return mod->distanzaVelocita(km);
 }
 
-void control::onClickOrarioForm() const {
-
+QTime control::onClickOrarioForm() const {
+    orario aux=mod->orarioFormato();
+    int s=aux.getSecondi();
+    int m=aux.getMinuti();
+    int o=aux.getOre();
+    QTime auxT(o, m, s);
+    return auxT;
 }
 
-void control::onClickDividi() const {
-
+QTime control::onClickDividi(int d) const {
+    mod->divisioneOrario(d);
+    return getTime();
 }
 
 
@@ -140,8 +163,8 @@ string control::onClickStagione() const {
     return mod->stagioni();
 }
 
-void control::onClickDataForm() const {
-
+QString control::onClickDataForm() const {
+    return QString::fromStdString(mod->dataFormato());
 }
 
 int control::onClickDurata(QString s) const {
@@ -153,6 +176,9 @@ int control::onClickDurata(QString s) const {
     return mod->durataDate(g, me, a);
 }
 
+void control::onClickAggGiorni(int g) {
+    mod->aggGiorni(g);
+}
 
 //metodi solo di fuso
 int control::onClickFuso() const {
@@ -167,12 +193,32 @@ double control::onClickLon() const {
     return mod->getLongitude();
 }
 
-int control::onClickEmis() const {
-    return mod->getEmisfero();
+QString control::onClickEmis() const {
+    int aux=mod->getEmisfero();
+    if(!aux)
+        return "Boreale";
+    else
+        return "Australe";
 }
 
 int control::onClickDifferenza(string c) const {
     return mod->differenzaFusi(c);
+}
+
+QTime control::getTime() const {
+    int o=mod->Ore();
+    int mi=mod->Minuti();
+    int s=mod->Secondi();
+    QTime auxT(o, mi, s);
+    return auxT;
+}
+
+QDate control::getDate() const {
+    int g=mod->Giorno();
+    int me=mod->Mese();
+    int a=mod->Anno();
+    QDate auxD(a, me, g);
+    return auxD;
 }
 
 QDateTime control::getDateTime() const {
@@ -182,9 +228,14 @@ QDateTime control::getDateTime() const {
     int o=mod->Ore();
     int mi=mod->Minuti();
     int s=mod->Secondi();
-    QDate auxD(g, me, a);
+    QDate auxD(a, me, g);
     QTime auxT(o, mi, s);
     return QDateTime(auxD, auxT);
+}
+
+QString control::getFuso() const {
+    string c=mod->Citta();
+    return QString::fromStdString(c);
 }
 
 QDateTime control::onClickOrarioAltraCitta(string c) const {
@@ -208,4 +259,3 @@ QDateTime control::onClickNoon() const {
     mod->solarnoon();
     return getDateTime();
 }
-
