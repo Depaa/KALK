@@ -1,12 +1,11 @@
 #ifndef CONTROL_H
 #define CONTROL_H
 #include"model.h"
-#include"view.h"
 #include<QString>
 #include<QTime>
 #include<QDate>
 #include <QDateTime>
-#include <QChar>
+
 /*
 The Controller can ask the Model to update its data.
 The Controller can ask the View to change its presentation,
@@ -35,35 +34,39 @@ class control
 
         bool onClickCreaOrario(QString) const;
         bool onClickCreaData(QString) const;
-        bool onClickCreaFuso(string) const;
+        bool onClickCreaFuso(QString) const;
         bool onClickCreaSole(QString) const;
 
         //METODI VIRTUALI
         bool onClickSomma(QString) const;
         bool onClickSottrazione(QString) const;
-        void onClickClear() const;
+        void onClickClear();
 
         //metodi solo di orario
         double onClickVelocita(double) const;
-        void onClickOrarioForm() const;
-        void onClickDividi() const;
+        QTime onClickOrarioForm() const;
+        QTime onClickDividi(int) const;
 
         //metodi solo di data
         int onClickSettimana() const; //numero settimana
         int onClickGiornoAnno() const; //numero
         string onClickGiornoSett() const; //nome giorno
         string onClickStagione() const;
-        void onClickDataForm() const;
+        QString onClickDataForm() const;
         int onClickDurata(QString) const;
+        void onClickAggGiorni(int);
 
         //metodi solo di fuso
         int onClickFuso() const;
         double onClickLat() const;
         double onClickLon() const;
-        int onClickEmis() const;
+        QString onClickEmis() const;
         int onClickDifferenza(string) const;
         //getDateTime per non ripetere 4 volte solite operazioni
+        QTime getTime() const;
+        QDate getDate() const;
         QDateTime getDateTime() const;
+        QString getFuso() const;
 
         QDateTime onClickOrarioAltraCitta(string) const;
 
