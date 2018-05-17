@@ -1,6 +1,12 @@
 #ifndef MODEL_H
 #define MODEL_H
-
+/*
+Model:
+Manages the app data and state
+Not concerned with UI or presentation
+Often persists somewhere
+Same model should be reusable, unchanged in different interfaces
+*/
 #include"sole.h"
 #include"fusoorario.h"
 
@@ -19,6 +25,7 @@ class model
         void buildOrario(int, int, int);
         void buildData(int, int, int, int, int, int);
         void buildFusoorario(string);
+        void buildFusoorario(string, data);
         void buildSole(double, double, int, data, bool, double, double);
 
         int Ore() const;
@@ -42,8 +49,8 @@ class model
 
         //metodi virtuali con polimorfismo
         //ORE-MINUTI-SECONDI
-        void somma(int, int, int);
-        void sottrazione(int, int, int);
+        void Sum(int, int, int);
+        void Sub(int, int, int);
 
         //funzioni virtuali
         void clearMemory();
@@ -52,7 +59,7 @@ class model
         double distanzaVelocita(double) const;
         /*NB: CHIEDERE AL PROF SE VA BENE O E' MEGLIO FARE UN RITORNO IN INT*/
         //tolto orario per void
-        void orarioFormato(); //controllare se da formato12h a formato24h
+        orario orarioFormato() const; //controllare se da formato12h a formato24h
         orario divisioneOrario(int) const;
 
         //funzioni di data
@@ -62,7 +69,7 @@ class model
         string giorniSettimana() const;
         string dataFormato() const;
         int durataDate(int, int, int) const;
-
+        void aggGiorni(int);
         //funzioni di fusoorario
         int getFuso() const;
         double getLatitude() const;
