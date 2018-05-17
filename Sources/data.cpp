@@ -2,13 +2,12 @@
 
 //costruttore GIORNO-MESE-ANNO-ORE-MINUTI-SECONDI
 data::data(int g, int me, int a, int o, int mi, int s) : orario(o, mi, s), giorno(g), mese(me), anno(a) {
-    if(g<1 || g>31 || me<1 || me>12 || a<0 || !dataError()) {
-        giorno=1;
-        mese=1;
-        anno=2018;
-        //overflow_error();
+    if(g<1 || g>giorniMese() || me<1 || me>12 || a<0 || a>3500) {
+        throw overflow_error();
     }
 }
+
+data::data(int g, int m, int a) : orario(), giorno(g), mese(m), anno(a) {}
 
 //costruttore GIORNO-MESE-ANNO-SECONDI
 /*data::data(int g, int m, int a, int s) {
@@ -49,7 +48,8 @@ bool data::isBisestile() const {
     }
     return bisestile;
 }
-
+/* 
+//non serve più
 bool data::dataError() const {
     bool bisFeb=true;
     bool countMese=false;
@@ -64,7 +64,7 @@ bool data::dataError() const {
         countMese=giorno<32;
 
     return bisFeb && countMese;
-}
+}*/
 
 int data::giorniMese() const {
     int m=mese;
@@ -289,9 +289,10 @@ void data::togliAnno(int a) {
     else
         anno=anno-a;
 
-    if(anno<0)
-        anno=0;
-    //ritornare un errore di overflow qua
+    if(anno<0) {
+        //anno=0;
+        throw overflow_error();
+    }
 }
 
 
@@ -373,19 +374,19 @@ string data::giornoSettimana() const {
     string g;
 
     if(giornoSett==0)
-        g="Sabato";
+        g="Sabato ";
     else if(giornoSett==1)
-        g="Domenica";
+        g="Domenica ";
     else if(giornoSett==2)
-        g="Lunedi'";
+        g="Lunedi' ";
     else if(giornoSett==3)
-        g="Martedi'";
+        g="Martedi' ";
     else if(giornoSett==4)
-        g="Mercoledi'";
+        g="Mercoledi' ";
     else if(giornoSett==5)
-        g="Giovedi'";
+        g="Giovedi' ";
     else if(giornoSett==6)
-        g="Venerdi'";
+        g="Venerdi' ";
 
     return g;
 }
@@ -483,24 +484,6 @@ int data::durata(const data& o) const {
         return gg+(aux.contaGiorniAnno()-contaGiorniAnno());
     }
 }
-/*int data::durata(const data& o) {
-    if(o.getAnno()==anno)
-        return contaGiorniAnno()-o.contaGiorniAnno();
-    else if(o.getAnno()<anno) {   //o < data che ho
-        //entro qua o è almeno 1 anno minore
-        //va bene ritorna un int positivo
-        data aux=*this;
-        int gg=0;
-        int count=anno-o.getAnno();
-        while(count!=0) {
-            gg=gg+aux.contaGiorniAnno();
-            aux.togliAnno(1);
-            count=count-1;
-        }
-
-        return gg+contaGiorniAnno()-(365-o.contaGiorniAnno());
-    }
-}*/
 
 void data::cambiaGiorno(int g) {
     if(g<1 || g>giorniMese())
