@@ -485,7 +485,7 @@ void view::clickCreaFuso(){
             Orario->setDisabled(true);
             Data->setDisabled(true);
             Fuso->setDisabled(true);
-            Sole->setEnabled(true);
+            Sole->setDisabled(true);
 
             fusoButton->setEnabled(true);
             latButton->setEnabled(true);
@@ -493,18 +493,18 @@ void view::clickCreaFuso(){
             emisButton->setEnabled(true);
             differenzaButton->setEnabled(true);
             orarioAltraCittaButton->setEnabled(true);
+            sommaButton->setEnabled(true);
+            sottrazioneButton->setEnabled(true);
+            settimanaButton->setEnabled(true);
+            giornoAnnoButton->setEnabled(true);
+            giornoSettButton->setEnabled(true);
+            stagioneButton->setEnabled(true);
+            dataFormButton->setEnabled(true);
+            durataButton->setEnabled(true);
+            velocitaButton->setEnabled(true);
+            orarioFormButton->setEnabled(true);
+            dividiButton->setEnabled(true);
 
-            sommaButton->setDisabled(true);
-            sottrazioneButton->setDisabled(true);
-            settimanaButton->setDisabled(true);
-            giornoAnnoButton->setDisabled(true);
-            giornoSettButton->setDisabled(true);
-            stagioneButton->setDisabled(true);
-            dataFormButton->setDisabled(true);
-            durataButton->setDisabled(true);
-            velocitaButton->setDisabled(true);
-            orarioFormButton->setDisabled(true);
-            dividiButton->setDisabled(true);
             sunriseButton->setDisabled(true);
             sunsetButton->setDisabled(true);
             noonButton->setDisabled(true);
@@ -568,17 +568,46 @@ void view::clickCreaSole(){
     if(dialog->exec()==QDialog::Accepted) {
         bool sent=true;
         QString s;
-        s= s+line1->text() + "," + line2->text() + "," + line3->text() + "," + line4->text() + "/" + line5->text() + "/" + line6->text() + "," + line7->text() + ":" + line8->text() + ":" + line9->text() + "," + line10->text() + "," + line11->text() + "," + line12->text();
+        s= line1->text() + "," + line2->text() + "," + line3->text() + "," + line4->text() + "/" + line5->text() + "/" + line6->text() + "," + line7->text() + ":" + line8->text() + ":" + line9->text()+ "," + line10->text() + "," + line11->text() + "," + line12->text();
         sent= controller->onClickCreaSole(s);
         if (sent)
         {
-            mostraData=line4->text() + "/" + line5->text() + "/" + line6->text();
-            mostraOra= line7->text() + ":" + line8->text() + ":" + line9->text();
+            QDate d=controller->getDate();
+            QTime t=controller->getTime();
+            mostraData=d.toString("dd/MM/yyyy");
+            mostraOra=t.toString("hh:mm:ss");
 
             time->setText(mostraOra);
             date->setText(mostraData);
             time->show();
             date->show();
+
+            Orario->setDisabled(true);
+            Data->setDisabled(true);
+            Fuso->setDisabled(true);
+            Sole->setDisabled(true);
+
+            sommaButton->setEnabled(true);
+            sottrazioneButton->setEnabled(true);
+            settimanaButton->setEnabled(true);
+            giornoAnnoButton->setEnabled(true);
+            giornoSettButton->setEnabled(true);
+            stagioneButton->setEnabled(true);
+            dataFormButton->setEnabled(true);
+            durataButton->setEnabled(true);
+            velocitaButton->setEnabled(true);
+            orarioFormButton->setEnabled(true);
+            dividiButton->setEnabled(true);
+            sunriseButton->setEnabled(true);
+            sunsetButton->setEnabled(true);
+            noonButton->setEnabled(true);
+
+            fusoButton->setDisabled(true);
+            latButton->setDisabled(true);
+            lonButton->setDisabled(true);
+            emisButton->setDisabled(true);
+            differenzaButton->setDisabled(true);
+            orarioAltraCittaButton->setDisabled(true);
         }
         else
         {
