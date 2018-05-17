@@ -141,9 +141,14 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
     gData->addWidget(dataFormButton, 0, 2);
 
     durataButton = new QPushButton("Durata", this) ;
-    durataButton->setFont(QFont("Arial", 7));
+    durataButton->setFont(QFont("Arial", 10));
     durataButton->setFixedSize(60,60);
     gData->addWidget(durataButton, 1, 2);
+
+    aggGiorniButton=new QPushButton("Aggiungi\nGiorni", this) ;
+    aggGiorniButton->setFont(QFont("Arial", 10));
+    aggGiorniButton->setFixedSize(60,60);
+    gData->addWidget(aggGiorniButton, 0, 3);
 
     //metodi solo di fuso
     QGridLayout* gFuso=new QGridLayout();
@@ -223,6 +228,7 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
     connect(stagioneButton, SIGNAL(clicked(bool)), this, SLOT(clickStagione()));
     connect(dataFormButton, SIGNAL(clicked(bool)), this, SLOT(clickDataForm()));
     connect(durataButton, SIGNAL(clicked(bool)), this, SLOT(clickDurata()));
+    connect(aggGiorniButton, SIGNAL(clicked(bool)), this, SLOT(clickAggGiorni()));
 
     connect(fusoButton, SIGNAL(clicked(bool)), this, SLOT(clickFuso()));
     connect(latButton, SIGNAL(clicked(bool)), this, SLOT(clickLat()));
@@ -846,10 +852,18 @@ void view::clickDividi(){
 
     }
 }
-
-
 //metodi solo di data
-void view::clickSettimana(){
+void view::clickSettimana() {
+    int sett=controller->onClickSettimana();
+    QMessageBox MB;
+    MB.setWindowTitle("Numero Settimana");
+    MB.setText(QString::number(sett));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
+}
+
+
+void view::clickAggGiorni(){
     //int aux=controller->onClickAggGiorni();
     QDialog* dialog=new QDialog(this);
     QFormLayout form(dialog);
@@ -877,24 +891,33 @@ void view::clickSettimana(){
         time->show();
         date->show();
     }
-    /*QMessageBox MB;
-
-    MB.setWindowTitle("Settimana dell'Anno");
-    MB.setText(" ");
-    MB.setFont(QFont( "Arial", 10, QFont::Bold));
-    MB.exec();*/
 }
 
 void view::clickGiornoAnno(){
-
+    int day=controller->onClickGiornoAnno();
+    QMessageBox MB;
+    MB.setWindowTitle("Numero Giorno");
+    MB.setText(QString::number(day));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickGiornoSett() {
-
+    string Nday=controller->onClickGiornoSett();
+    QMessageBox MB;
+    MB.setWindowTitle("Giorno della settimana");
+    MB.setText(QString::fromStdString(Nday));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickStagione(){
-
+    string stag=controller->onClickStagione();
+    QMessageBox MB;
+    MB.setWindowTitle("Stagione");
+    MB.setText(QString::fromStdString(stag));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickDataForm(){
@@ -906,7 +929,7 @@ void view::clickDataForm(){
     MB.exec();
 }
 
-void view::clickDurata(){
+void view::clickDurata() {
 
 }
 
@@ -949,11 +972,97 @@ void view::clickEmis(){
 }
 
 void view::clickDifferenza(){
+    QDialog* dialog=new QDialog(this);
+    QFormLayout form(dialog);
 
+    form.addRow(new QLabel("Scegli Citta"));
+    QComboBox* CB=new QComboBox;
+    CB->addItem("Londra");
+    CB->addItem("Casablanca");
+    CB->addItem("Roma");
+    CB->addItem("Parigi");
+    CB->addItem("Madrid");
+    CB->addItem("Helsinki");
+    CB->addItem("Citta del Capo");
+    CB->addItem("Mosca");
+    CB->addItem("Abu Dhabi");
+    CB->addItem("Bangkok");
+    CB->addItem("Pechino");
+    CB->addItem("Tokyp");
+    CB->addItem("Seul");
+    CB->addItem("Sydney");
+    CB->addItem("Wellington");
+    CB->addItem("Rio de Janeiro");
+    CB->addItem("Buenos Aires");
+    CB->addItem("Santiago");
+    CB->addItem("New York");
+    CB->addItem("Chicago");
+    CB->addItem("Citta del Messico");
+    CB->addItem("Denver");
+    CB->addItem("Los Angeles");
+    form.addRow(CB);
+
+    QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
+    form.addRow(B);
+    QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
+    QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    if(dialog->exec()==QDialog::Accepted) {
+        QString s=CB->currentText();
+        int diff=controller->onClickDifferenza(s.toStdString());
+        QMessageBox MB;
+        MB.setWindowTitle("Differenza");
+        MB.setText("La di fusoorari tra le due citta' e': " + QString::number(diff));
+        MB.setFont(QFont( "Arial", 10, QFont::Bold));
+        MB.exec();
+    }
 }
 
 void view::clickOrarioAltraCitta(){
+    QDialog* dialog=new QDialog(this);
+    QFormLayout form(dialog);
 
+    form.addRow(new QLabel("Scegli Citta"));
+    QComboBox* CB=new QComboBox;
+    CB->addItem("Londra");
+    CB->addItem("Casablanca");
+    CB->addItem("Roma");
+    CB->addItem("Parigi");
+    CB->addItem("Madrid");
+    CB->addItem("Helsinki");
+    CB->addItem("Citta del Capo");
+    CB->addItem("Mosca");
+    CB->addItem("Abu Dhabi");
+    CB->addItem("Bangkok");
+    CB->addItem("Pechino");
+    CB->addItem("Tokyp");
+    CB->addItem("Seul");
+    CB->addItem("Sydney");
+    CB->addItem("Wellington");
+    CB->addItem("Rio de Janeiro");
+    CB->addItem("Buenos Aires");
+    CB->addItem("Santiago");
+    CB->addItem("New York");
+    CB->addItem("Chicago");
+    CB->addItem("Citta del Messico");
+    CB->addItem("Denver");
+    CB->addItem("Los Angeles");
+    form.addRow(CB);
+
+    QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
+    form.addRow(B);
+    QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
+    QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    if(dialog->exec()==QDialog::Accepted) {
+        QString s=CB->currentText();
+        QDateTime oracit=controller->onClickOrarioAltraCitta(s.toStdString());
+        QMessageBox MB;
+        MB.setWindowTitle("Orario Altra Citta'");
+        MB.setText("A " + CB->currentText() + " sono le " + oracit.time().toString("hh:mm:ss") + " del " + oracit.date().toString("dd/MM/yyyy"));
+        MB.setFont(QFont( "Arial", 10, QFont::Bold));
+        MB.exec();
+    }
 }
 
 
