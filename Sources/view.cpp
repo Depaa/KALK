@@ -465,7 +465,7 @@ void view::clickCreaFuso(){
     if(dialog->exec()==QDialog::Accepted) {
         bool sent=true;
         QString s;
-        s= CB->currentText()+ line1->text() + "/" + line2->text() + "/" + line3->text() + "," + line4->text() + ":" + line5->text() + ":" + line6->text();
+        s= CB->currentText() + "," + line1->text() + "/" + line2->text() + "/" + line3->text() + "," + line4->text() + ":" + line5->text() + ":" + line6->text();
         sent= controller->onClickCreaFuso(s);
         if (sent)
         {
@@ -729,11 +729,17 @@ void view::clickClear(){
     Sole->setEnabled(true);
     Fuso->setEnabled(true);
 
-    time->hide();
-    date->hide();
-    fuso->hide();
-    sole->hide();
-
+    //time->hide();
+    //date->hide();
+    //fuso->hide();
+    //sole->hide();
+    QDateTime d=controller->getDateTime();
+    mostraOra= d.time().toString("hh:mm:ss");
+    mostraData=d.date().toString("dd/MM/yyyy");
+    time->setText(mostraOra);
+    date->setText(mostraData);
+    time->show();
+    date->show();
     fusoButton->setDisabled(true);
     latButton->setDisabled(true);
     lonButton->setDisabled(true);
@@ -815,7 +821,39 @@ void view::clickDividi(){
 
 //metodi solo di data
 void view::clickSettimana(){
+    //int aux=controller->onClickAggGiorni();
+    QDialog* dialog=new QDialog(this);
+    QFormLayout form(dialog);
 
+    form.addRow(new QLabel("Inserisci Giorni"));
+    QLineEdit* line1= new QLineEdit(dialog);
+    form.addRow(line1);
+
+    QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
+    form.addRow(B);
+    QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
+    QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    if(dialog->exec()==QDialog::Accepted) {
+        QString s;
+        s=s+line1->text();
+        int agg=s.toInt();
+        controller->onClickAggGiorni(agg);
+        QDateTime d=controller->getDateTime();
+        //QTime t=controller->getTime();
+        mostraData=d.date().toString("dd/MM/yyyy");
+        mostraOra=d.time().toString("hh:mm:ss");
+        time->setText(mostraOra);
+        date->setText(mostraData);
+        time->show();
+        date->show();
+    }
+    /*QMessageBox MB;
+
+    MB.setWindowTitle("Settimana dell'Anno");
+    MB.setText(" ");
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();*/
 }
 
 void view::clickGiornoAnno(){
@@ -846,19 +884,39 @@ void view::clickDurata(){
 
 //metodi solo di fuso
 void view::clickFuso(){
-
+    int s=controller->onClickFuso();
+    QMessageBox MB;
+    MB.setWindowTitle("Fuso Orario");
+    MB.setText(QString::number(s));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickLat(){
-
+    double s=controller->onClickLat();
+    QMessageBox MB;
+    MB.setWindowTitle("Latitudine");
+    MB.setText(QString::number(s));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickLon(){
-
+    double s=controller->onClickLon();
+    QMessageBox MB;
+    MB.setWindowTitle("Longitudine");
+    MB.setText(QString::number(s));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickEmis(){
-
+    QString s=controller->onClickEmis();
+    QMessageBox MB;
+    MB.setWindowTitle("Emisfero");
+    MB.setText(s);
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickDifferenza(){
@@ -872,13 +930,28 @@ void view::clickOrarioAltraCitta(){
 
 //metodi solo di sole
 void view::clickSunrise(){
-
+    QDateTime s=controller->onClickSunrise();
+    QMessageBox MB;
+    MB.setWindowTitle("Sorgere");
+    MB.setText(s.toString("dd:MM:yyyy") + " alle " + s.toString("hh:mm:ss"));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickSunset(){
-
+    QDateTime s=controller->onClickSunset();
+    QMessageBox MB;
+    MB.setWindowTitle("Tramonto");
+    MB.setText(s.toString("dd:MM:yyyy") + " alle " + s.toString("hh:mm:ss"));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
 
 void view::clickNoon(){
-
+    QDateTime s=controller->onClickNoon();
+    QMessageBox MB;
+    MB.setWindowTitle("Mezzogiorno Solare");
+    MB.setText(s.toString("dd:MM:yyyy") + " alle " + s.toString("hh:mm:ss"));
+    MB.setFont(QFont( "Arial", 10, QFont::Bold));
+    MB.exec();
 }
