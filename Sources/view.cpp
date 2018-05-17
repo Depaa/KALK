@@ -15,6 +15,7 @@
 #include <iostream>
 #include <QTime>
 #include <QMessageBox>
+#include <QComboBox>
 
 view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFuso(), timerSole() {
     setWindowTitle("Kalk");
@@ -279,7 +280,7 @@ void view::clickCreaOrario() {
     if(dialog->exec()==QDialog::Accepted) {
         bool sent=true;
         QString s;
-        s= s+line1->text() + ":" + line2->text() + ":" + line3->text();
+        s= line1->text() + ":" + line2->text() + ":" + line3->text();
         sent= controller->onClickCreaOrario(s);
         if (sent)
         {
@@ -356,12 +357,15 @@ void view::clickCreaData() {
     if(dialog->exec()==QDialog::Accepted) {
         bool sent=true;
         QString s;
-        s= s+line1->text() + "/" + line2->text() + "/" + line3->text() + "," + line4->text() + ":" + line5->text() + ":" + line6->text();
+        s= line1->text() + "/" + line2->text() + "/" + line3->text() + "," + line4->text() + ":" + line5->text() + ":" + line6->text();
         sent= controller->onClickCreaData(s);
         if (sent)
         {
-            mostraOra=line4->text() + ":" + line5->text() + ":" + line6->text();
-            mostraData= line1->text() + "/" + line2->text() + "/" + line3->text();
+            QDate d=controller->getDate();
+            QTime t=controller->getTime();
+            mostraData=d.toString("dd/MM/yyyy");
+            mostraOra=t.toString("hh:mm:ss");
+
             time->setText(mostraOra);
             time->show();
             date->setText(mostraData);
@@ -408,10 +412,50 @@ void view::clickCreaFuso(){
     QDialog* dialog=new QDialog(this);
     QFormLayout form(dialog);
 
-    form.addRow(new QLabel("Inserisci Citta"));
+    form.addRow(new QLabel("Scegli Citta"));
+    QComboBox* CB=new QComboBox;
+    CB->addItem("Londra");
+    CB->addItem("Casablanca");
+    CB->addItem("Roma");
+    CB->addItem("Parigi");
+    CB->addItem("Madrid");
+    CB->addItem("Helsinki");
+    CB->addItem("Citta del Capo");
+    CB->addItem("Mosca");
+    CB->addItem("Abu Dhabi");
+    CB->addItem("Bangkok");
+    CB->addItem("Pechino");
+    CB->addItem("Tokyp");
+    CB->addItem("Seul");
+    CB->addItem("Sydney");
+    CB->addItem("Wellington");
+    CB->addItem("Rio de Janeiro");
+    CB->addItem("Buenos Aires");
+    CB->addItem("Santiago");
+    CB->addItem("New York");
+    CB->addItem("Chicago");
+    CB->addItem("Citta del Messico");
+    CB->addItem("Denver");
+    CB->addItem("Los Angeles");
     QLineEdit* line1= new QLineEdit(dialog);
-    QString textline1=QString("Nome Citta': ");
+    QString textline1=QString("Giorno*: ");
+    QLineEdit* line2= new QLineEdit(dialog);
+    QString textline2=QString("Mese*: ");
+    QLineEdit* line3= new QLineEdit(dialog);
+    QString textline3=QString("Anno*: ");
+    QLineEdit* line4= new QLineEdit(dialog);
+    QString textline4=QString("Ore*: ");
+    QLineEdit* line5= new QLineEdit(dialog);
+    QString textline5=QString("Minuti*: ");
+    QLineEdit* line6= new QLineEdit(dialog);
+    QString textline6=QString("Secondi*: ");
+    form.addRow(CB);
     form.addRow(textline1, line1);
+    form.addRow(textline2, line2);
+    form.addRow(textline3, line3);
+    form.addRow(textline4, line4);
+    form.addRow(textline5, line5);
+    form.addRow(textline6, line6);
 
     QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
     form.addRow(B);
@@ -421,13 +465,49 @@ void view::clickCreaFuso(){
     if(dialog->exec()==QDialog::Accepted) {
         bool sent=true;
         QString s;
-        s= s+line1->text();
+        s= CB->currentText()+line1->text() + "/" + line2->text() + "/" + line3->text() + "," + line4->text() + ":" + line5->text() + ":" + line6->text();
         sent= controller->onClickCreaFuso(s);
         if (sent)
         {
-            mostraFuso=s;
+            QString f=controller->getFuso();
+            QDate d=controller->getDate();
+            QTime t=controller->getTime();
+            mostraData=d.toString("dd/MM/yyyy");
+            mostraOra=t.toString("hh:mm:ss");
+            mostraFuso=f;
             fuso->setText(mostraFuso);
+            time->setText(mostraOra);
+            date->setText(mostraData);
             fuso->show();
+            time->show();
+            date->show();
+
+            Orario->setEnabled(true);
+            Data->setEnabled(true);
+            Sole->setEnabled(true);
+            Fuso->setDisabled(true);
+
+            fusoButton->setEnabled(true);
+            latButton->setEnabled(true);
+            lonButton->setEnabled(true);
+            emisButton->setEnabled(true);
+            differenzaButton->setEnabled(true);
+            orarioAltraCittaButton->setEnabled(true);
+
+            sommaButton->setDisabled(true);
+            sottrazioneButton->setDisabled(true);
+            settimanaButton->setDisabled(true);
+            giornoAnnoButton->setDisabled(true);
+            giornoSettButton->setDisabled(true);
+            stagioneButton->setDisabled(true);
+            dataFormButton->setDisabled(true);
+            durataButton->setDisabled(true);
+            velocitaButton->setDisabled(true);
+            orarioFormButton->setDisabled(true);
+            dividiButton->setDisabled(true);
+            sunriseButton->setDisabled(true);
+            sunsetButton->setDisabled(true);
+            noonButton->setDisabled(true);
         }
         else
         {
@@ -507,7 +587,6 @@ void view::clickCreaSole(){
             m.exec();
         }
     }
-
 }
 
 //METODI VIRTUALI
@@ -522,10 +601,10 @@ void view::clickSomma(){
     QString textline2=QString("Minuti: ");
     QLineEdit* line3= new QLineEdit(dialog);
     QString textline3=QString("Secondi: ");
-    
+
     form.addRow(textline1, line1);
     form.addRow(textline2, line2);
-    form.addRow(textline3, line3);    
+    form.addRow(textline3, line3);
 
     QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
     form.addRow(B);
@@ -535,8 +614,8 @@ void view::clickSomma(){
     if(dialog->exec()==QDialog::Accepted) {
         bool sent=true;
         QString s;
-        s= s+line1->text() + ":" + line2->text() + ":" + line3->text();        
-        if(Orario->isDisabled) { //sono su orario
+        if(!(Orario->isEnabled())) { //sono su orario
+            s= s+line1->text() + ":" + line2->text() + ":" + line3->text();
             sent= controller->onClickSomma(s);
             if (sent)
             {
@@ -554,18 +633,19 @@ void view::clickSomma(){
             }
         }
         else { //sono su data
+            s= s+line1->text() + ":" + line2->text() + ":" + line3->text();
             sent= controller->onClickSomma(s);
             if(sent) {
-                   QDate d=controller->getDate();
-                   QTime t=controller->getTime();
-                   mostraData=d.toString("dd:MM:yyyy");
-                   mostraOra=t.toString("hh:mm:ss");
+                   QDateTime d=controller->getDateTime();
+                   //QTime t=controller->getTime();
+                   mostraData=d.date().toString("dd/MM/yyyy");
+                   mostraOra=d.time().toString("hh:mm:ss");
                    time->setText(mostraOra);
                    date->setText(mostraData);
                    time->show();
                    date->show();
             }
-            
+
             else {
                 QMessageBox m;
                 m.setText("Hai sbagliato coglione");
@@ -575,18 +655,134 @@ void view::clickSomma(){
     }
 }
 
-void view::clickSottrazione(){
 
+void view::clickSottrazione(){
+    QDialog* dialog=new QDialog(this);
+    QFormLayout form(dialog);
+
+    form.addRow(new QLabel("Sottrai Orario"));
+    QLineEdit* line1= new QLineEdit(dialog);
+    QString textline1=QString("Ore: ");
+    QLineEdit* line2= new QLineEdit(dialog);
+    QString textline2=QString("Minuti: ");
+    QLineEdit* line3= new QLineEdit(dialog);
+    QString textline3=QString("Secondi: ");
+
+    form.addRow(textline1, line1);
+    form.addRow(textline2, line2);
+    form.addRow(textline3, line3);
+
+    QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
+    form.addRow(B);
+    QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
+    QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    if(dialog->exec()==QDialog::Accepted) {
+        bool sent=true;
+        QString s;
+        if(!(Orario->isEnabled())) { //sono su orario
+            s= s+line1->text() + ":" + line2->text() + ":" + line3->text();
+            sent= controller->onClickSottrazione(s);
+            if (sent)
+            {
+                //time->hide();
+                QTime t=controller->getTime();
+                mostraOra=t.toString("hh:mm:ss");
+                time->setText(mostraOra);
+                time->show();
+            }
+            else
+            {
+                QMessageBox m;
+                m.setText("Hai sbagliato coglione");
+                m.exec();
+            }
+        }
+        else { //sono su data
+            s= s+line1->text() + ":" + line2->text() + ":" + line3->text();
+            sent= controller->onClickSottrazione(s);
+            if(sent) {
+                   QDateTime d=controller->getDateTime();
+                   //QTime t=controller->getTime();
+                   mostraData=d.date().toString("dd/MM/yyyy");
+                   mostraOra=d.time().toString("hh:mm:ss");
+                   time->setText(mostraOra);
+                   date->setText(mostraData);
+                   time->show();
+                   date->show();
+            }
+
+            else {
+                QMessageBox m;
+                m.setText("Hai sbagliato coglione");
+                m.exec();
+            }
+        }
+    }
 }
 
-void view::clickClear(){
 
+void view::clickClear(){
+    controller->onClickClear();
+    Orario->setEnabled(true);
+    Data->setEnabled(true);
+    Sole->setEnabled(true);
+    Fuso->setEnabled(true);
+
+    time->hide();
+    date->hide();
+    fuso->hide();
+    sole->hide();
+
+    fusoButton->setDisabled(true);
+    latButton->setDisabled(true);
+    lonButton->setDisabled(true);
+    emisButton->setDisabled(true);
+    differenzaButton->setDisabled(true);
+    orarioAltraCittaButton->setDisabled(true);
+
+    sommaButton->setDisabled(true);
+    sottrazioneButton->setDisabled(true);
+    settimanaButton->setDisabled(true);
+    giornoAnnoButton->setDisabled(true);
+    giornoSettButton->setDisabled(true);
+    stagioneButton->setDisabled(true);
+    dataFormButton->setDisabled(true);
+    durataButton->setDisabled(true);
+    velocitaButton->setDisabled(true);
+    orarioFormButton->setDisabled(true);
+    dividiButton->setDisabled(true);
+    sunriseButton->setDisabled(true);
+    sunsetButton->setDisabled(true);
+    noonButton->setDisabled(true);
 }
 
 
 //metodi solo di orario
 void view::clickVelocita(){
+    QDialog* dialog=new QDialog(this);
+    QFormLayout form(dialog);
 
+    form.addRow(new QLabel("Inserisci Chilometri"));
+    QLineEdit* line1= new QLineEdit(dialog);
+    form.addRow(line1);
+
+    QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
+    form.addRow(B);
+    QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
+    QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    if(dialog->exec()==QDialog::Accepted) {
+        QString s;
+        s=s+line1->text();
+        double km=s.toDouble();
+        double aux=controller->onClickVelocita(km);
+        QMessageBox MB;
+        MB.setWindowTitle("Velocita");
+        MB.setText("Hai guidato con una media di " + QString::number(aux) +" km/h");
+        MB.setFont(QFont( "Arial", 10, QFont::Bold));
+        MB.exec();
+    }
 }
 
 void view::clickOrarioForm(){
@@ -594,7 +790,21 @@ void view::clickOrarioForm(){
 }
 
 void view::clickDividi(){
+    QDialog* dialog=new QDialog(this);
+    QFormLayout form(dialog);
 
+    form.addRow(new QLabel("Inserisci in quanto\n vuoi dividere l'orario"));
+    QLineEdit* line1= new QLineEdit(dialog);
+    form.addRow(line1);
+
+    QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
+    form.addRow(B);
+    QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
+    QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    if(dialog->exec()==QDialog::Accepted) {
+
+    }
 }
 
 
