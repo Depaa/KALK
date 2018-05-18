@@ -310,6 +310,7 @@ void view::clickCreaOrario() {
             velocitaButton->setEnabled(true);
             orarioFormButton->setEnabled(true);
             dividiButton->setEnabled(true);
+            clearButton->setEnabled(true);
 
             settimanaButton->setDisabled(true);
             giornoAnnoButton->setDisabled(true);
@@ -401,6 +402,7 @@ void view::clickCreaData() {
             orarioFormButton->setEnabled(true);
             dividiButton->setEnabled(true);
             aggGiorniButton->setEnabled(true);
+            clearButton->setEnabled(true);
 
             fusoButton->setDisabled(true);
             latButton->setDisabled(true);
@@ -519,6 +521,7 @@ void view::clickCreaFuso(){
             orarioFormButton->setEnabled(true);
             dividiButton->setEnabled(true);
             aggGiorniButton->setEnabled(true);
+            clearButton->setEnabled(true);
 
             sunriseButton->setDisabled(true);
             sunsetButton->setDisabled(true);
@@ -617,6 +620,7 @@ void view::clickCreaSole(){
             sunsetButton->setEnabled(true);
             noonButton->setEnabled(true);
             aggGiorniButton->setEnabled(true);
+            clearButton->setEnabled(true);
 
             fusoButton->setDisabled(true);
             latButton->setDisabled(true);
@@ -791,6 +795,7 @@ void view::clickClear(){
     emisButton->setDisabled(true);
     differenzaButton->setDisabled(true);
     orarioAltraCittaButton->setDisabled(true);
+    clearButton->setDisabled(true);
 
     sommaButton->setDisabled(true);
     sottrazioneButton->setDisabled(true);
