@@ -51,6 +51,7 @@ class view : public QWidget
         void clickStagione();
         void clickDataForm();
         void clickDurata();
+        void clickAggGiorni();
 
         //metodi solo di fuso
         void clickFuso();
@@ -107,6 +108,7 @@ class view : public QWidget
         QPushButton* stagioneButton;
         QPushButton* dataFormButton;
         QPushButton* durataButton;
+        QPushButton* aggGiorniButton;
 
         //metodi solo di fuso
         QPushButton* fusoButton;
