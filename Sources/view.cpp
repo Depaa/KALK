@@ -159,7 +159,7 @@ view::view(QWidget* parent) : QWidget(parent) {
     togliGiorniButton->setFont(QFont("Arial", 10));
     togliGiorniButton->setFixedSize(60,60);
     togliGiorniButton->setDisabled(true);
-    gData->addWidget(togliGiorniButton, 0, 3);
+    gData->addWidget(togliGiorniButton, 1, 3);
 
     //metodi solo di fuso
     QGridLayout* gFuso=new QGridLayout();
@@ -308,7 +308,7 @@ void view::clickCreaOrario() {
         sent= controller->onClickCreaOrario(s);
         if (sent)
         {
-            mostraOra=s;
+            mostraOra=controller->getTime().toString("hh:mm:ss");
             time->setText(mostraOra);
             time->show();
 
@@ -640,6 +640,7 @@ void view::clickCreaSole(){
             sunsetButton->setEnabled(true);
             noonButton->setEnabled(true);
             aggGiorniButton->setEnabled(true);
+            togliGiorniButton->setEnabled(true);
             clearButton->setEnabled(true);
 
             fusoButton->setDisabled(true);
