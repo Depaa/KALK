@@ -1,3 +1,5 @@
+#include "view.h"
+#include "control.h"
 #include <QApplication>
 #include <QFont>
 #include <QLabel>
@@ -9,25 +11,16 @@
 #include <QDialog>
 #include <QString>
 #include <QDialogButtonBox>
-#include <QAbstractButton>
-#include "view.h"
-#include "control.h"
-#include <iostream>
 #include <QTime>
 #include <QMessageBox>
 #include <QComboBox>
 
-view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFuso(), timerSole() {
+view::view(QWidget* parent) : QWidget(parent) {
     setWindowTitle("Kalk");
     contGrid = new QGridLayout();
     setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowCloseButtonHint);
     //setFixedSize(800,500);
-    /*
-    timerOra= new QTimer(this);
-    timerData= new QTimer(this);
-    timerFuso= new QTimer(this);
-    timerSole= new QTimer(this);
-*/
+
     Orario = new QPushButton("Inserisci\nOrario", this); //QPushButton(const QString & text, QWidget * parent = 0)
     Orario -> setFont(QFont("Arial", 10));
     Orario->setFixedSize(170,170);
@@ -50,11 +43,12 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
 
     clearButton=new QPushButton("RESET", this);
     clearButton -> setFont(QFont("Arial", 10));
+    clearButton->setDisabled(true);
     contGrid->addWidget(clearButton, 4, 0);
 
     time = new QLabel(this);
     time->setFixedSize(200,50);
-    time->setStyleSheet(QString("border: 2px solid black"));
+    //time->setStyleSheet(QString("border: 2px solid black"));
     time->setAlignment(Qt::AlignCenter);
     time->setFont(QFont( "Arial", 10, QFont::Bold));
     time->hide();
@@ -62,7 +56,7 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
 
     date = new QLabel(this);
     date->setFixedSize(200,50);
-    date->setStyleSheet(QString("border: 2px solid black"));
+    //date->setStyleSheet(QString("border: 2px solid black"));
     date->setAlignment(Qt::AlignCenter);
     date->setFont(QFont( "Arial", 10, QFont::Bold));
     date->hide();
@@ -70,7 +64,7 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
 
     fuso = new QLabel(this);
     fuso->setFixedSize(200,50);
-    fuso->setStyleSheet(QString("border: 2px solid black"));
+    //fuso->setStyleSheet(QString("border: 2px solid black"));
     fuso->setAlignment(Qt::AlignCenter);
     fuso->setFont(QFont( "Arial", 10, QFont::Bold));
     fuso->hide();
@@ -78,10 +72,9 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
 
     sole = new QLabel(this);
     sole->setFixedSize(200,50);
-    sole->setStyleSheet(QString("border: 2px solid black"));
+    //sole->setStyleSheet(QString("border: 2px solid black"));
     sole->setAlignment(Qt::AlignCenter);
     sole->setFont(QFont( "Arial", 10, QFont::Bold));
-
     sole->hide();
     contGrid->addWidget(sole, 3, 2);
 
@@ -89,27 +82,32 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
     sommaButton= new QPushButton("+", this);
     sommaButton->setFont(QFont("Arial", 10));
     sommaButton->setFixedSize(60,60);
+    sommaButton->setDisabled(true);
     gOrario->addWidget(sommaButton, 0, 0);
 
     sottrazioneButton= new QPushButton("-", this);
     sottrazioneButton->setFont(QFont("Arial", 10));
     sottrazioneButton->setFixedSize(60,60);
+    sottrazioneButton->setDisabled(true);
     gOrario->addWidget(sottrazioneButton, 1, 0);
 
     //metodi solo di orario
     velocitaButton = new QPushButton("Velocita", this) ;
     velocitaButton->setFont(QFont("Arial", 10));
     velocitaButton->setFixedSize(60,60);
+    velocitaButton->setDisabled(true);
     gOrario->addWidget(velocitaButton, 0, 1);
 
     orarioFormButton = new QPushButton("Form", this) ;
     orarioFormButton->setFont(QFont("Arial", 10));
     orarioFormButton->setFixedSize(60,60);
+    orarioFormButton->setDisabled(true);
     gOrario->addWidget(orarioFormButton, 1, 1);
 
     dividiButton = new QPushButton("/", this) ;
     dividiButton->setFont(QFont("Arial", 10));
     dividiButton->setFixedSize(60,60);
+    dividiButton->setDisabled(true);
     //gOrario->setRowMinimumHeight(2, 140);
     gOrario->addWidget(dividiButton, 0, 2, Qt::AlignCenter);
 
@@ -118,36 +116,43 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
     settimanaButton = new QPushButton("N.\nSett", this) ; //numero settimana
     settimanaButton->setFont(QFont("Arial", 10));
     settimanaButton->setFixedSize(60,60);
+    settimanaButton->setDisabled(true);
     gData->addWidget(settimanaButton, 0, 0);
 
     giornoAnnoButton = new QPushButton("N.\nGiorno", this) ; //numero
     giornoAnnoButton->setFont(QFont("Arial", 10));
     giornoAnnoButton->setFixedSize(60,60);
+    giornoAnnoButton->setDisabled(true);
     gData->addWidget(giornoAnnoButton, 1, 0);
 
     giornoSettButton = new QPushButton("Giorno", this) ; //nome giorno.
     giornoSettButton->setFont(QFont("Arial", 10));
     giornoSettButton->setFixedSize(60,60);
+    giornoSettButton->setDisabled(true);
     gData->addWidget(giornoSettButton, 0, 1);
 
     stagioneButton = new QPushButton("Stag.", this) ;
     stagioneButton->setFont(QFont("Arial", 10));
     stagioneButton->setFixedSize(60,60);
+    stagioneButton->setDisabled(true);
     gData->addWidget(stagioneButton, 1, 1);
 
     dataFormButton = new QPushButton("Form", this) ;
     dataFormButton->setFont(QFont("Arial", 10));
     dataFormButton->setFixedSize(60,60);
+    dataFormButton->setDisabled(true);
     gData->addWidget(dataFormButton, 0, 2);
 
     durataButton = new QPushButton("Durata", this) ;
     durataButton->setFont(QFont("Arial", 10));
     durataButton->setFixedSize(60,60);
+    durataButton->setDisabled(true);
     gData->addWidget(durataButton, 1, 2);
 
     aggGiorniButton=new QPushButton("Aggiungi\nGiorni", this) ;
     aggGiorniButton->setFont(QFont("Arial", 10));
     aggGiorniButton->setFixedSize(60,60);
+    aggGiorniButton->setDisabled(true);
     gData->addWidget(aggGiorniButton, 0, 3);
 
     //metodi solo di fuso
@@ -155,31 +160,38 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
     fusoButton = new QPushButton("Fuso", this) ;
     fusoButton->setFont(QFont("Arial", 10));
     fusoButton->setFixedSize(60,60);
+    fusoButton->setDisabled(true);
     gFuso->addWidget(fusoButton, 0, 0);
 
     latButton = new QPushButton("Lat", this) ;
     latButton->setFont(QFont("Arial", 10));
     latButton->setFixedSize(60,60);
+    latButton->setDisabled(true);
     gFuso->addWidget(latButton, 1, 0);
 
     lonButton = new QPushButton("Lon", this) ;
     lonButton->setFont(QFont("Arial", 10));
     lonButton->setFixedSize(60,60);
+    lonButton->setDisabled(true);
     gFuso->addWidget(lonButton, 0, 1);
 
     emisButton = new QPushButton("Emis", this) ;
     emisButton->setFont(QFont("Arial", 10));
     emisButton->setFixedSize(60,60);
+    emisButton->setDisabled(true);
     gFuso->addWidget(emisButton, 1, 1);
 
     differenzaButton = new QPushButton("-", this) ;
     differenzaButton->setFont(QFont("Arial",10));
     differenzaButton->setFixedSize(60,60);
+    differenzaButton->setDisabled(true);
     gFuso->addWidget(differenzaButton, 0, 2);
+
 
     orarioAltraCittaButton = new QPushButton("Citta", this) ;
     orarioAltraCittaButton->setFont(QFont("Arial", 10));
     orarioAltraCittaButton->setFixedSize(60,60);
+    orarioAltraCittaButton->setDisabled(true);
     gFuso->addWidget(orarioAltraCittaButton, 1, 2);
 
     //metodi solo di sole
@@ -187,27 +199,22 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
     sunriseButton = new QPushButton("Rise", this) ;
     sunriseButton->setFont(QFont("Arial", 10));
     sunriseButton->setFixedSize(60,60);
+    sunriseButton->setDisabled(true);
     gSole->addWidget(sunriseButton, 0, 0);
 
     sunsetButton = new QPushButton("Set", this) ;
     sunsetButton->setFont(QFont("Arial", 10));
     sunsetButton->setFixedSize(60,60);
+    sunsetButton->setDisabled(true);
     gSole->addWidget(sunsetButton, 0, 1);
 
     noonButton = new QPushButton("Noon", this) ;
     noonButton->setFont(QFont("Arial", 10));
     noonButton->setFixedSize(60,60);
+    noonButton->setDisabled(true);
     gSole->addWidget(noonButton, 0, 2);
 
-    //okOra= new QAbstractState;
-
     //connessioni
-    /*
-    connect(okOra, SIGNAL(okOra), this, SLOT(clickMostraOrario()));
-    connect(date, SIGNAL(show()), this, SLOT(clickMostraData()));
-    connect(fuso, SIGNAL(show()), this, SLOT(clickMostraFuso()));
-    connect(sole, SIGNAL(show()), this, SLOT(clickMostraSole()));
-    */
 
     connect(Orario, SIGNAL(clicked(bool)), this, SLOT(clickCreaOrario()));
     connect(Data, SIGNAL(clicked(bool)), this, SLOT(clickCreaData()));
@@ -240,7 +247,6 @@ view::view(QWidget* parent) : QWidget(parent), timerOra(), timerData(), timerFus
     connect(sunriseButton, SIGNAL(clicked(bool)), this, SLOT(clickSunrise()));
     connect(sunsetButton, SIGNAL(clicked(bool)), this, SLOT(clickSunset()));
     connect(noonButton, SIGNAL(clicked(bool)), this, SLOT(clickNoon()));
-
 
     contGrid->setRowMinimumHeight(0, 200);
     contGrid->setRowMinimumHeight(1, 230);
@@ -320,6 +326,7 @@ void view::clickCreaOrario() {
             sunriseButton->setDisabled(true);
             sunsetButton->setDisabled(true);
             noonButton->setDisabled(true);
+            aggGiorniButton->setDisabled(true);
         }
 
         else
@@ -393,6 +400,7 @@ void view::clickCreaData() {
             velocitaButton->setEnabled(true);
             orarioFormButton->setEnabled(true);
             dividiButton->setEnabled(true);
+            aggGiorniButton->setEnabled(true);
 
             fusoButton->setDisabled(true);
             latButton->setDisabled(true);
@@ -510,6 +518,7 @@ void view::clickCreaFuso(){
             velocitaButton->setEnabled(true);
             orarioFormButton->setEnabled(true);
             dividiButton->setEnabled(true);
+            aggGiorniButton->setEnabled(true);
 
             sunriseButton->setDisabled(true);
             sunsetButton->setDisabled(true);
@@ -607,6 +616,7 @@ void view::clickCreaSole(){
             sunriseButton->setEnabled(true);
             sunsetButton->setEnabled(true);
             noonButton->setEnabled(true);
+            aggGiorniButton->setEnabled(true);
 
             fusoButton->setDisabled(true);
             latButton->setDisabled(true);
@@ -849,7 +859,12 @@ void view::clickDividi(){
     QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
 
     if(dialog->exec()==QDialog::Accepted) {
-
+        QTime timediv=controller->onClickDividi(line1->text().toInt());
+        QMessageBox MB;
+        MB.setWindowTitle("Dividi Tempo");
+        MB.setText(timediv.toString("hh:mm:ss"));
+        MB.setFont(QFont( "Arial", 10, QFont::Bold));
+        MB.exec();
     }
 }
 //metodi solo di data
@@ -930,7 +945,35 @@ void view::clickDataForm(){
 }
 
 void view::clickDurata() {
+    QDialog* dialog=new QDialog(this);
+    QFormLayout form(dialog);
 
+    form.addRow(new QLabel("Durata Date"));
+    QLineEdit* line1= new QLineEdit(dialog);
+    QString textline1=QString("Giorno: ");
+    QLineEdit* line2= new QLineEdit(dialog);
+    QString textline2=QString("Mese: ");
+    QLineEdit* line3= new QLineEdit(dialog);
+    QString textline3=QString("Anno: ");
+
+    form.addRow(textline1, line1);
+    form.addRow(textline2, line2);
+    form.addRow(textline3, line3);
+
+    QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
+    form.addRow(B);
+    QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
+    QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    if(dialog->exec()==QDialog::Accepted) {
+        QString s= line1->text() + "/" + line2->text() + "/" + line3->text();
+        int durata=controller->onClickDurata(s);
+        QMessageBox MB;
+        MB.setWindowTitle("Durata Date");
+        MB.setText(QString::number(durata));
+        MB.setFont(QFont( "Arial", 10, QFont::Bold));
+        MB.exec();
+    }
 }
 
 
