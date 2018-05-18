@@ -149,11 +149,17 @@ view::view(QWidget* parent) : QWidget(parent) {
     durataButton->setDisabled(true);
     gData->addWidget(durataButton, 1, 2);
 
-    aggGiorniButton=new QPushButton("Aggiungi\nGiorni", this) ;
+    aggGiorniButton=new QPushButton("Agg\nGiorni", this) ;
     aggGiorniButton->setFont(QFont("Arial", 10));
     aggGiorniButton->setFixedSize(60,60);
     aggGiorniButton->setDisabled(true);
     gData->addWidget(aggGiorniButton, 0, 3);
+
+    togliGiorniButton=new QPushButton("Togli\nGiorni", this) ;
+    togliGiorniButton->setFont(QFont("Arial", 10));
+    togliGiorniButton->setFixedSize(60,60);
+    togliGiorniButton->setDisabled(true);
+    gData->addWidget(togliGiorniButton, 0, 3);
 
     //metodi solo di fuso
     QGridLayout* gFuso=new QGridLayout();
@@ -236,6 +242,7 @@ view::view(QWidget* parent) : QWidget(parent) {
     connect(dataFormButton, SIGNAL(clicked(bool)), this, SLOT(clickDataForm()));
     connect(durataButton, SIGNAL(clicked(bool)), this, SLOT(clickDurata()));
     connect(aggGiorniButton, SIGNAL(clicked(bool)), this, SLOT(clickAggGiorni()));
+    connect(togliGiorniButton, SIGNAL(clicked(bool)), this, SLOT(clickTogliGiorni()));
 
     connect(fusoButton, SIGNAL(clicked(bool)), this, SLOT(clickFuso()));
     connect(latButton, SIGNAL(clicked(bool)), this, SLOT(clickLat()));
@@ -271,18 +278,23 @@ void view::setControl(control* c) {
 
 void view::clickCreaOrario() {
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Crea Orario");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Inserisci Orario"));
     QLineEdit* line1= new QLineEdit(dialog);
-    QString textline1=QString("Ore: ");
+    QString textline1=QString("Ore*: ");
     QLineEdit* line2= new QLineEdit(dialog);
-    QString textline2=QString("Minuti: ");
+    QString textline2=QString("Minuti*: ");
     QLineEdit* line3= new QLineEdit(dialog);
-    QString textline3=QString("Secondi: ");
+    QString textline3=QString("Secondi*: ");
+
+
     form.addRow(textline1, line1);
     form.addRow(textline2, line2);
     form.addRow(textline3, line3);
+    form.addRow(new QLabel("* campi obbligatori"));
+
 
     QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
     form.addRow(B);
@@ -328,6 +340,7 @@ void view::clickCreaOrario() {
             sunsetButton->setDisabled(true);
             noonButton->setDisabled(true);
             aggGiorniButton->setDisabled(true);
+            togliGiorniButton->setDisabled(true);
         }
 
         else
@@ -341,6 +354,7 @@ void view::clickCreaOrario() {
 
 void view::clickCreaData() {
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Crea Data");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Inserisci Data"));
@@ -362,6 +376,7 @@ void view::clickCreaData() {
     form.addRow(textline4, line4);
     form.addRow(textline5, line5);
     form.addRow(textline6, line6);
+    form.addRow(new QLabel("* campi obbligatori"));
 
     QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
     form.addRow(B);
@@ -402,6 +417,7 @@ void view::clickCreaData() {
             orarioFormButton->setEnabled(true);
             dividiButton->setEnabled(true);
             aggGiorniButton->setEnabled(true);
+            togliGiorniButton->setEnabled(true);
             clearButton->setEnabled(true);
 
             fusoButton->setDisabled(true);
@@ -426,6 +442,7 @@ void view::clickCreaData() {
 
 void view::clickCreaFuso(){
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Crea Fuso");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Scegli Citta"));
@@ -441,7 +458,7 @@ void view::clickCreaFuso(){
     CB->addItem("Abu Dhabi");
     CB->addItem("Bangkok");
     CB->addItem("Pechino");
-    CB->addItem("Tokyp");
+    CB->addItem("Tokyo");
     CB->addItem("Seul");
     CB->addItem("Sydney");
     CB->addItem("Wellington");
@@ -454,17 +471,17 @@ void view::clickCreaFuso(){
     CB->addItem("Denver");
     CB->addItem("Los Angeles");
     QLineEdit* line1= new QLineEdit(dialog);
-    QString textline1=QString("Giorno*: ");
+    QString textline1=QString("Giorno: ");
     QLineEdit* line2= new QLineEdit(dialog);
-    QString textline2=QString("Mese*: ");
+    QString textline2=QString("Mese: ");
     QLineEdit* line3= new QLineEdit(dialog);
-    QString textline3=QString("Anno*: ");
+    QString textline3=QString("Anno: ");
     QLineEdit* line4= new QLineEdit(dialog);
-    QString textline4=QString("Ore*: ");
+    QString textline4=QString("Ore: ");
     QLineEdit* line5= new QLineEdit(dialog);
-    QString textline5=QString("Minuti*: ");
+    QString textline5=QString("Minuti: ");
     QLineEdit* line6= new QLineEdit(dialog);
-    QString textline6=QString("Secondi*: ");
+    QString textline6=QString("Secondi: ");
     form.addRow(CB);
     form.addRow(textline1, line1);
     form.addRow(textline2, line2);
@@ -521,6 +538,7 @@ void view::clickCreaFuso(){
             orarioFormButton->setEnabled(true);
             dividiButton->setEnabled(true);
             aggGiorniButton->setEnabled(true);
+            togliGiorniButton->setEnabled(true);
             clearButton->setEnabled(true);
 
             sunriseButton->setDisabled(true);
@@ -538,33 +556,34 @@ void view::clickCreaFuso(){
 
 void view::clickCreaSole(){
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Crea Sole");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Inserisci Sole"));
     QLineEdit* line1= new QLineEdit(dialog);
-    QString textline1=QString("Latitudine: ");
+    QString textline1=QString("Latitudine*: ");
     QLineEdit* line2= new QLineEdit(dialog);
-    QString textline2=QString("Longitudine: ");
+    QString textline2=QString("Longitudine*: ");
     QLineEdit* line3= new QLineEdit(dialog);
-    QString textline3=QString("Fuso Orario: ");
+    QString textline3=QString("Fuso Orario*: ");
     QLineEdit* line4= new QLineEdit(dialog);
-    QString textline4=QString("Giorno : ");
+    QString textline4=QString("Giorno*: ");
     QLineEdit* line5= new QLineEdit(dialog);
-    QString textline5=QString("Mese: ");
+    QString textline5=QString("Mese*: ");
     QLineEdit* line6= new QLineEdit(dialog);
-    QString textline6=QString("Anno: ");
+    QString textline6=QString("Anno*: ");
     QLineEdit* line7= new QLineEdit(dialog);
-    QString textline7=QString("Ora(attuali): ");
+    QString textline7=QString("Ora(attuali)*: ");
     QLineEdit* line8= new QLineEdit(dialog);
-    QString textline8=QString("Minuti(attuali): ");
+    QString textline8=QString("Minuti(attuali)*: ");
     QLineEdit* line9= new QLineEdit(dialog);
-    QString textline9=QString("Secondi(attuali): ");
+    QString textline9=QString("Secondi(attuali)*: ");
     QLineEdit* line10= new QLineEdit(dialog);
-    QString textline10=QString("Ora Legale(1 o 0): ");
+    QString textline10=QString("Ora Legale(1 o 0)*: ");
     QLineEdit* line11= new QLineEdit(dialog);
-    QString textline11=QString("Equazione del Tempo: ");
+    QString textline11=QString("Equazione del Tempo*: ");
     QLineEdit* line12= new QLineEdit(dialog);
-    QString textline12=QString("Declinazione Solare: ");
+    QString textline12=QString("Declinazione Solare*: ");
     form.addRow(textline1, line1);
     form.addRow(textline2, line2);
     form.addRow(textline3, line3);
@@ -577,6 +596,7 @@ void view::clickCreaSole(){
     form.addRow(textline10, line10);
     form.addRow(textline11, line11);
     form.addRow(textline12, line12);
+    form.addRow(new QLabel("* campi obbligatori"));
 
     QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
     form.addRow(B);
@@ -707,6 +727,7 @@ void view::clickSomma(){
 
 void view::clickSottrazione(){
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Sottrai");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Sottrai Orario"));
@@ -778,10 +799,10 @@ void view::clickClear(){
     Sole->setEnabled(true);
     Fuso->setEnabled(true);
 
-    //time->hide();
-    //date->hide();
-    //fuso->hide();
-    //sole->hide();
+    time->hide();
+    date->hide();
+    fuso->hide();
+    sole->hide();
     QDateTime d=controller->getDateTime();
     mostraOra= d.time().toString("hh:mm:ss");
     mostraData=d.date().toString("dd/MM/yyyy");
@@ -796,7 +817,8 @@ void view::clickClear(){
     differenzaButton->setDisabled(true);
     orarioAltraCittaButton->setDisabled(true);
     clearButton->setDisabled(true);
-
+    aggGiorniButton->setDisabled(true);
+    togliGiorniButton->setDisabled(true);
     sommaButton->setDisabled(true);
     sottrazioneButton->setDisabled(true);
     settimanaButton->setDisabled(true);
@@ -813,10 +835,10 @@ void view::clickClear(){
     noonButton->setDisabled(true);
 }
 
-
 //metodi solo di orario
 void view::clickVelocita(){
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Velocita'");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Inserisci Chilometri"));
@@ -845,13 +867,14 @@ void view::clickOrarioForm() {
     QTime t=controller->onClickOrarioForm();
     QMessageBox MB;
     MB.setWindowTitle("Formato 12h");
-    MB.setText("Il formato 12h e': " + t.toString("hh:mm:ss"));
+    MB.setText(t.toString("hh:mm:ss"));
     MB.setFont(QFont( "Arial", 10, QFont::Bold));
     MB.exec();
 }
 
 void view::clickDividi(){
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Dividi Orario");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Inserisci in quante parti\nVuoi dividere l'orario"));
@@ -884,8 +907,9 @@ void view::clickSettimana() {
 
 
 void view::clickAggGiorni(){
-    //int aux=controller->onClickAggGiorni();
+
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Aggiungi Giorni");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Inserisci Giorni"));
@@ -902,6 +926,36 @@ void view::clickAggGiorni(){
         s=s+line1->text();
         int agg=s.toInt();
         controller->onClickAggGiorni(agg);
+        QDateTime d=controller->getDateTime();
+        //QTime t=controller->getTime();
+        mostraData=d.date().toString("dd/MM/yyyy");
+        mostraOra=d.time().toString("hh:mm:ss");
+        time->setText(mostraOra);
+        date->setText(mostraData);
+        time->show();
+        date->show();
+    }
+}
+
+void view::clickTogliGiorni() {
+    QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Togli Giorni");
+    QFormLayout form(dialog);
+
+    form.addRow(new QLabel("Inserisci Giorni"));
+    QLineEdit* line1= new QLineEdit(dialog);
+    form.addRow(line1);
+
+    QDialogButtonBox* B=new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dialog);
+    form.addRow(B);
+    QObject::connect(B, SIGNAL(accepted()), dialog, SLOT(accept()));
+    QObject::connect(B, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    if(dialog->exec()==QDialog::Accepted) {
+        QString s;
+        s=s+line1->text();
+        int agg=s.toInt();
+        controller->onClickTogGiorni(agg);
         QDateTime d=controller->getDateTime();
         //QTime t=controller->getTime();
         mostraData=d.date().toString("dd/MM/yyyy");
@@ -1021,6 +1075,7 @@ void view::clickEmis(){
 
 void view::clickDifferenza(){
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Differenza Fusi");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Scegli Citta"));
@@ -1036,7 +1091,7 @@ void view::clickDifferenza(){
     CB->addItem("Abu Dhabi");
     CB->addItem("Bangkok");
     CB->addItem("Pechino");
-    CB->addItem("Tokyp");
+    CB->addItem("Tokyo");
     CB->addItem("Seul");
     CB->addItem("Sydney");
     CB->addItem("Wellington");
@@ -1068,6 +1123,7 @@ void view::clickDifferenza(){
 
 void view::clickOrarioAltraCitta(){
     QDialog* dialog=new QDialog(this);
+    dialog->setWindowTitle("Orario Altra Citta'");
     QFormLayout form(dialog);
 
     form.addRow(new QLabel("Scegli Citta"));
@@ -1083,7 +1139,7 @@ void view::clickOrarioAltraCitta(){
     CB->addItem("Abu Dhabi");
     CB->addItem("Bangkok");
     CB->addItem("Pechino");
-    CB->addItem("Tokyp");
+    CB->addItem("Tokyo");
     CB->addItem("Seul");
     CB->addItem("Sydney");
     CB->addItem("Wellington");
@@ -1119,7 +1175,7 @@ void view::clickSunrise(){
     QDateTime s=controller->onClickSunrise();
     QMessageBox MB;
     MB.setWindowTitle("Sorgere");
-    MB.setText(s.toString("dd:MM:yyyy") + " alle " + s.toString("hh:mm:ss"));
+    MB.setText(s.date().toString("dd/MM/yyyy") + " alle " + s.time().toString("hh:mm:ss"));
     MB.setFont(QFont( "Arial", 10, QFont::Bold));
     MB.exec();
 }
@@ -1128,7 +1184,7 @@ void view::clickSunset(){
     QDateTime s=controller->onClickSunset();
     QMessageBox MB;
     MB.setWindowTitle("Tramonto");
-    MB.setText(s.toString("dd:MM:yyyy") + " alle " + s.toString("hh:mm:ss"));
+    MB.setText(s.date().toString("dd/MM/yyyy") + " alle " + s.time().toString("hh:mm:ss"));
     MB.setFont(QFont( "Arial", 10, QFont::Bold));
     MB.exec();
 }
@@ -1137,7 +1193,7 @@ void view::clickNoon(){
     QDateTime s=controller->onClickNoon();
     QMessageBox MB;
     MB.setWindowTitle("Mezzogiorno Solare");
-    MB.setText(s.toString("dd:MM:yyyy") + " alle " + s.toString("hh:mm:ss"));
+    MB.setText(s.date().toString("dd/MM/yyyy") + " alle " + s.time().toString("hh:mm:ss"));
     MB.setFont(QFont( "Arial", 10, QFont::Bold));
     MB.exec();
 }
