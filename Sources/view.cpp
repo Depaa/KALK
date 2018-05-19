@@ -283,11 +283,11 @@ void view::clickCreaOrario() {
 
     form.addRow(new QLabel("Inserisci Orario"));
     QLineEdit* line1= new QLineEdit(dialog);
-    QString textline1=QString("Ore*: ");
+    QString textline1=QString("Ore: ");
     QLineEdit* line2= new QLineEdit(dialog);
-    QString textline2=QString("Minuti*: ");
+    QString textline2=QString("Minuti: ");
     QLineEdit* line3= new QLineEdit(dialog);
-    QString textline3=QString("Secondi*: ");
+    QString textline3=QString("Secondi: ");
 
 
     form.addRow(textline1, line1);
@@ -346,7 +346,7 @@ void view::clickCreaOrario() {
         else
         {
             QMessageBox m;
-            m.setText("Hai sbagliato coglione");
+            m.setText("Errore:\nInserire tutti i campi obbligatori\nControlla se hai inserito un orario valido");
             m.exec();
         }
     }
@@ -359,11 +359,11 @@ void view::clickCreaData() {
 
     form.addRow(new QLabel("Inserisci Data"));
     QLineEdit* line1= new QLineEdit(dialog);
-    QString textline1=QString("Giorno*: ");
+    QString textline1=QString("Giorno: ");
     QLineEdit* line2= new QLineEdit(dialog);
-    QString textline2=QString("Mese*: ");
+    QString textline2=QString("Mese: ");
     QLineEdit* line3= new QLineEdit(dialog);
-    QString textline3=QString("Anno*: ");
+    QString textline3=QString("Anno: ");
     QLineEdit* line4= new QLineEdit(dialog);
     QString textline4=QString("Ore: ");
     QLineEdit* line5= new QLineEdit(dialog);
@@ -433,7 +433,7 @@ void view::clickCreaData() {
         else
         {
             QMessageBox m;
-            m.setText("Hai sbagliato coglione");
+            m.setText("Errore:\nInserire tutti i campi obbligatori\nControlla se hai inserito un orario e una data validi");
             m.exec();
         }
     }
@@ -548,7 +548,8 @@ void view::clickCreaFuso(){
         else
         {
             QMessageBox m;
-            m.setText("Hai sbagliato coglione");
+            m.setWindowTitle("Errore");
+            m.setText("Inserire tutti i campi obbligatori\nControlla se hai inserito un orario e una data validi");
             m.exec();
         }
     }
@@ -625,8 +626,8 @@ void view::clickCreaSole(){
             Fuso->setDisabled(true);
             Sole->setDisabled(true);
 
-            sommaButton->setEnabled(true);
-            sottrazioneButton->setEnabled(true);
+            sommaButton->setDisabled(true);
+            sottrazioneButton->setDisabled(true);
             settimanaButton->setEnabled(true);
             giornoAnnoButton->setEnabled(true);
             giornoSettButton->setEnabled(true);
@@ -639,8 +640,8 @@ void view::clickCreaSole(){
             sunriseButton->setEnabled(true);
             sunsetButton->setEnabled(true);
             noonButton->setEnabled(true);
-            aggGiorniButton->setEnabled(true);
-            togliGiorniButton->setEnabled(true);
+            aggGiorniButton->setDisabled(true);
+            togliGiorniButton->setDisabled(true);
             clearButton->setEnabled(true);
 
             fusoButton->setDisabled(true);
@@ -653,7 +654,8 @@ void view::clickCreaSole(){
         else
         {
             QMessageBox m;
-            m.setText("Hai sbagliato coglione");
+            m.setWindowTitle("Errore");
+            m.setText("Inserire tutti i campi obbligatori\nControlla se hai inserito un orario e una data validi");
             m.exec();
         }
     }
@@ -698,7 +700,8 @@ void view::clickSomma(){
             else
             {
                 QMessageBox m;
-                m.setText("Hai sbagliato coglione");
+                m.setWindowTitle("Errore");
+                m.setText("Inserire tutti i campi obbligatori\nControlla se hai inserito un orario valido");
                 m.exec();
             }
         }
@@ -718,7 +721,8 @@ void view::clickSomma(){
 
             else {
                 QMessageBox m;
-                m.setText("Hai sbagliato coglione");
+                m.setWindowTitle("Errore");
+                m.setText("Inserire tutti i campi obbligatori\nControlla se hai inserito un orario valido");
                 m.exec();
             }
         }
@@ -765,7 +769,8 @@ void view::clickSottrazione(){
             else
             {
                 QMessageBox m;
-                m.setText("Hai sbagliato coglione");
+                m.setWindowTitle("Errore");
+                m.setText("Inserire tutti i campi obbligatori\nControlla se hai inserito un orario valido");
                 m.exec();
             }
         }
@@ -785,7 +790,8 @@ void view::clickSottrazione(){
 
             else {
                 QMessageBox m;
-                m.setText("Hai sbagliato coglione");
+                m.setWindowTitle("Errore");
+                m.setText("Inserire tutti i campi obbligatori\nControlla se hai inserito un orario valido");
                 m.exec();
             }
         }
@@ -804,6 +810,7 @@ void view::clickClear(){
     date->hide();
     fuso->hide();
     sole->hide();
+    /*
     QDateTime d=controller->getDateTime();
     mostraOra= d.time().toString("hh:mm:ss");
     mostraData=d.date().toString("dd/MM/yyyy");
@@ -811,6 +818,7 @@ void view::clickClear(){
     date->setText(mostraData);
     time->show();
     date->show();
+    */
     fusoButton->setDisabled(true);
     latButton->setDisabled(true);
     lonButton->setDisabled(true);
