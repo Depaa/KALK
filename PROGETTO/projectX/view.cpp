@@ -19,7 +19,7 @@ view::view(QWidget* parent) : QWidget(parent) {
     setWindowTitle("Kalk");
     contGrid = new QGridLayout();
     setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowCloseButtonHint);
-    //setFixedSize(800,500);
+    setFixedSize(800, 800);
 
     Orario = new QPushButton("Inserisci\nOrario", this); //QPushButton(const QString & text, QWidget * parent = 0)
     Orario -> setFont(QFont("Arial", 10));
@@ -71,7 +71,7 @@ view::view(QWidget* parent) : QWidget(parent) {
     contGrid->addWidget(fuso, 2, 2);
 
     sole = new QLabel(this);
-    sole->setFixedSize(200,220);
+    sole->setFixedSize(250,220);
     //sole->setStyleSheet(QString("border: 2px solid black"));
     sole->setAlignment(Qt::AlignCenter);
     sole->setFont(QFont( "Arial", 10, QFont::Bold));
