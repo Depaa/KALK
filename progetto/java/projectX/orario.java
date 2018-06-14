@@ -153,11 +153,11 @@ public class orario {
 	    return aux;
 	}
 
-	public orario divisione(int d) throws overflow_error {
+	public orario divisione(int d) {
 	    //divido sec in d parti
 	    orario aux=new orario();
 	    if(sec<d)
-	        throw new overflow_error();
+	        return aux;
 	    else
 	        aux.sec=sec/d;
 	    return aux;
