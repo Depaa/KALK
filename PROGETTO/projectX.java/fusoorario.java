@@ -250,7 +250,7 @@ public class fusoorario extends data {
 	        else
 	            return Fuso() -fo.Fuso();
 	    }
-	    //solo uno dei due è <0
+	    //solo uno dei due e' <0
 	    else if (fo.Fuso()<0 || Fuso()>0) {
 	        if (fo.Fuso() > Fuso()) //this <0 && fo >0
 	            return fo.Fuso() - Fuso();
@@ -283,7 +283,7 @@ public class fusoorario extends data {
 	}
 
 	public void cambiaCitta(String c) throws overflow_error {
-	    //c sarà corretta perchè la scelta è a tendina
+	    //c sara' corretta perche' la scelta e' a tendina
 		if (checkCitta(c)==false) {
             throw new overflow_error();
         }
