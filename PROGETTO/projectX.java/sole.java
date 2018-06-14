@@ -209,7 +209,7 @@ public class sole extends data {
 	}
 
 	public void cambiaTime(data d) throws overflow_error {
-	    //passo con il costruttore quindi sar‡ gi‡ una data corretta
+	    //passo con il costruttore quindi sara' gi√† una data corretta
 	    this.cambiaAnno(d.getAnno());
 	    this.cambiaMese(d.getMese());
 	    this.cambiaGiorno(d.getGiorno());
