@@ -154,9 +154,9 @@ orario orario::quantoMancaMezzogiorno() const {
 
 orario orario::divisione(int d) const {
     //divido sec in d parti
-    orario* aux=new orario;
+    orario* aux=new orario();
     if(sec<d)
-        throw overflow_error();
+        return *aux;
     else
         aux->sec=sec/d;
     return *aux;
