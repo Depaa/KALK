@@ -132,7 +132,7 @@ public class orario {
 	        sec=sec-o*3600;
 	}
 
-	//ritorna la velocità media fatta in un intervallo o per fare km kilometri
+	//ritorna la velocita' media fatta in un intervallo o per fare km kilometri
 	public double distanzaVel(double km) throws overflow_error {
 		if(km<=0)
 			throw new overflow_error();
