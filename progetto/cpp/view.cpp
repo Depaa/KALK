@@ -202,21 +202,21 @@ view::view(QWidget* parent) : QWidget(parent) {
 
     //metodi solo di sole
     QGridLayout* gSole=new QGridLayout();
-    sunriseButton = new QPushButton("Rise", this) ;
+    sunriseButton = new QPushButton("Alba", this) ;
     sunriseButton->setFont(QFont("Arial", 10));
-    sunriseButton->setFixedSize(60,60);
+    sunriseButton->setFixedSize(80,60);
     sunriseButton->setDisabled(true);
     gSole->addWidget(sunriseButton, 0, 0);
 
-    sunsetButton = new QPushButton("Set", this) ;
+    sunsetButton = new QPushButton("Tramonto", this) ;
     sunsetButton->setFont(QFont("Arial", 10));
-    sunsetButton->setFixedSize(60,60);
+    sunsetButton->setFixedSize(80,60);
     sunsetButton->setDisabled(true);
     gSole->addWidget(sunsetButton, 0, 1);
 
-    noonButton = new QPushButton("Noon", this) ;
+    noonButton = new QPushButton("Mezzogiorno\nSolare", this) ;
     noonButton->setFont(QFont("Arial", 10));
-    noonButton->setFixedSize(60,60);
+    noonButton->setFixedSize(80,60);
     noonButton->setDisabled(true);
     gSole->addWidget(noonButton, 0, 2);
 
