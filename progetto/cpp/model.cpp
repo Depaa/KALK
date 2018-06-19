@@ -271,15 +271,3 @@ data model::solarnoon() const {
     sole* aux=dynamic_cast<sole*>(m);
     return aux->mezzogiornoSolare();
 }
-/*
-void model::stampacose() const {
-    sole* aux=dynamic_cast<sole*>(m);
-    cout << "lat: " << aux->getLat();
-    cout << " lon: " << aux->getLon();
-    cout << " tz: " << aux->getTz();
-    cout << " data: " << aux->getTime();
-    cout << " ol: " << aux->getOraLegale();
-    cout << " teq: " << aux->getTempoEQ();
-    cout << " sd: " << aux->getSoleDeclina();
-}
-*/
