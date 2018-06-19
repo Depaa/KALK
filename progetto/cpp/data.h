@@ -26,10 +26,6 @@ class data : public orario
         int anno;
         //sec è ereditato
     public:
-        //data();
-        //questo costruttore serve solo per sistemare il costruttore di sole
-        //quando chiamo data=0 nel mezzo dei parametri del costruttore
-        //data(int);
         //costruttore per costruire le gg/mm/aa
         data(int, int, int);
         //costruttore GIORNO-MESE-ANNO-ORE-MINUTI-SECONDI
