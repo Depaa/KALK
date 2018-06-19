@@ -58,9 +58,8 @@ class model
 
         //funzioni di orario
         double distanzaVelocita(double) const;
-        /*NB: CHIEDERE AL PROF SE VA BENE O E' MEGLIO FARE UN RITORNO IN INT*/
         //tolto orario per void
-        orario orarioFormato() const; //controllare se da formato12h a formato24h
+        orario orarioFormato() const;
         orario divisioneOrario(int) const;
 
         //funzioni di data
