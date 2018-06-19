@@ -48,7 +48,6 @@ view::view(QWidget* parent) : QWidget(parent) {
 
     time = new QLabel(this);
     time->setFixedSize(200,50);
-    //time->setStyleSheet(QString("border: 2px solid black"));
     time->setAlignment(Qt::AlignCenter);
     time->setFont(QFont( "Arial", 10, QFont::Bold));
     time->hide();
@@ -56,7 +55,6 @@ view::view(QWidget* parent) : QWidget(parent) {
 
     date = new QLabel(this);
     date->setFixedSize(200,50);
-    //date->setStyleSheet(QString("border: 2px solid black"));
     date->setAlignment(Qt::AlignCenter);
     date->setFont(QFont( "Arial", 10, QFont::Bold));
     date->hide();
@@ -64,7 +62,6 @@ view::view(QWidget* parent) : QWidget(parent) {
 
     fuso = new QLabel(this);
     fuso->setFixedSize(200,50);
-    //fuso->setStyleSheet(QString("border: 2px solid black"));
     fuso->setAlignment(Qt::AlignCenter);
     fuso->setFont(QFont( "Arial", 10, QFont::Bold));
     fuso->hide();
@@ -72,7 +69,6 @@ view::view(QWidget* parent) : QWidget(parent) {
 
     sole = new QLabel(this);
     sole->setFixedSize(250,220);
-    //sole->setStyleSheet(QString("border: 2px solid black"));
     sole->setAlignment(Qt::AlignCenter);
     sole->setFont(QFont( "Arial", 10, QFont::Bold));
     sole->hide();
@@ -108,7 +104,6 @@ view::view(QWidget* parent) : QWidget(parent) {
     dividiButton->setFont(QFont("Arial", 10));
     dividiButton->setFixedSize(60,60);
     dividiButton->setDisabled(true);
-    //gOrario->setRowMinimumHeight(2, 140);
     gOrario->addWidget(dividiButton, 0, 2, Qt::AlignCenter);
 
     //metodi solo di data
@@ -119,13 +114,13 @@ view::view(QWidget* parent) : QWidget(parent) {
     settimanaButton->setDisabled(true);
     gData->addWidget(settimanaButton, 0, 0);
 
-    giornoAnnoButton = new QPushButton("N.\nGiorno", this) ; //numero
+    giornoAnnoButton = new QPushButton("N.\nGiorno", this) ; //numero giorno
     giornoAnnoButton->setFont(QFont("Arial", 10));
     giornoAnnoButton->setFixedSize(60,60);
     giornoAnnoButton->setDisabled(true);
     gData->addWidget(giornoAnnoButton, 1, 0);
 
-    giornoSettButton = new QPushButton("Giorno", this) ; //nome giorno.
+    giornoSettButton = new QPushButton("Giorno", this) ; //nome giorno
     giornoSettButton->setFont(QFont("Arial", 10));
     giornoSettButton->setFixedSize(60,60);
     giornoSettButton->setDisabled(true);
@@ -272,7 +267,7 @@ view::view(QWidget* parent) : QWidget(parent) {
 
 view::~view() {}
 
-void view::setControl(control* c) {
+void view::setControl(control* c) {  //setto il controller
     controller=c;
 }
 
@@ -716,7 +711,6 @@ void view::clickSomma(){
             sent= controller->onClickSomma(s);
             if(sent) {
                    QDateTime d=controller->getDateTime();
-                   //QTime t=controller->getTime();
                    mostraData=d.date().toString("dd/MM/yyyy");
                    mostraOra=d.time().toString("hh:mm:ss");
                    time->setText(mostraOra);
@@ -786,7 +780,6 @@ void view::clickSottrazione(){
             sent= controller->onClickSottrazione(s);
             if(sent) {
                    QDateTime d=controller->getDateTime();
-                   //QTime t=controller->getTime();
                    mostraData=d.date().toString("dd/MM/yyyy");
                    mostraOra=d.time().toString("hh:mm:ss");
                    time->setText(mostraOra);
@@ -817,15 +810,7 @@ void view::clickClear(){
     date->hide();
     fuso->hide();
     sole->hide();
-    /*
-    QDateTime d=controller->getDateTime();
-    mostraOra= d.time().toString("hh:mm:ss");
-    mostraData=d.date().toString("dd/MM/yyyy");
-    time->setText(mostraOra);
-    date->setText(mostraData);
-    time->show();
-    date->show();
-    */
+    
     fusoButton->setDisabled(true);
     latButton->setDisabled(true);
     lonButton->setDisabled(true);
@@ -954,7 +939,6 @@ void view::clickAggGiorni(){
         int agg=s.toInt();
         controller->onClickAggGiorni(agg);
         QDateTime d=controller->getDateTime();
-        //QTime t=controller->getTime();
         mostraData=d.date().toString("dd/MM/yyyy");
         mostraOra=d.time().toString("hh:mm:ss");
         time->setText(mostraOra);
@@ -985,7 +969,6 @@ void view::clickTogliGiorni() {
         int agg=s.toInt();
         controller->onClickTogGiorni(agg);
         QDateTime d=controller->getDateTime();
-        //QTime t=controller->getTime();
         mostraData=d.date().toString("dd/MM/yyyy");
         mostraOra=d.time().toString("hh:mm:ss");
         time->setText(mostraOra);
