@@ -2,6 +2,7 @@
 #include<string>
 #include<sstream>
 
+//inserito per far andar bene la compilazione nelle macchine scolastiche
 namespace patch {
 	template <typename T> std::string to_string(const T& n) {
 		std::ostringstream stm;
@@ -437,7 +438,6 @@ string data::meseAnno() const {
 
 string data::formatoData() const {
 
-    //osi << giornoSettimana << giorno << meseAnno() << anno;
     string gg=patch::to_string(giorno);
     string aa=patch::to_string(anno);
     string aux=giornoSettimana() + gg + meseAnno() + aa;
