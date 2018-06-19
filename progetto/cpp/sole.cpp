@@ -35,7 +35,6 @@ bool sole::operator==(const sole& s) const {
     return lat==s.getLat() && lon==s.getLon() && tz==s.getTz() && getTime()==s.getTime() && oraLegale==s.getOraLegale() && tempoEQ==s.getTempoEQ() && soleDeclina==s.getSoleDeclina();
 }
 
-//occhio ai parametri
 double sole::giornoGiuliano() const {
     int year=getTime().getAnno();
     int month=getTime().getMese();
