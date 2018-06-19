@@ -105,8 +105,6 @@ bool control::onClickSomma(QString sum) const {
     int m=aux.operator [](1).toInt();
     int s=aux.operator [](2).toInt();
 
-    //mancano controlli se h,m,s sono != int
-
     mod->Sum(h, m, s);
     return true;
 }
