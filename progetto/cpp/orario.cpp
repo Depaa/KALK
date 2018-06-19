@@ -58,7 +58,6 @@ orario* orario::sottrazione(const orario& o) const {
 
     if(o.getSecondi()>getSecondi()) {
         secT=60+(getSecondi()-o.getSecondi());
-        //secT=60+(sec%60-o.getSecondi());
         minT=minT+1;
     }
     else
@@ -110,7 +109,7 @@ void orario::aggiungiOre(int o) {
 void orario::sottraiSecondi(int s) {
     if(s<0)
         aggiungiSecondi(-s);
-    else if(s>0 && sec<s) //giorni precedenti
+    else if(s>0 && sec<s) 
         sec=86400-((86400*(s/86400))-(sec-s))%86400;
     else if(s>=0)
         sec=sec-s;
